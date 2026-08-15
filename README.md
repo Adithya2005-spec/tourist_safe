@@ -62,7 +62,7 @@ The platform supports **three languages** (English, Hindi, Kannada) and operates
 | 📊 **Command Dashboard** (React + Vite) | `http://localhost:5173/` |
 | 📱 **Tourist App Demo** (HTML Prototype) | `http://localhost:3000/demo.html` |
 | ⚡ **Backend API Docs** | `http://localhost:8000/docs` |
-
+| **Final Project with Dashboard + Backend**| 'https://rakshasetu-dashboard.onrender.com/'|'https://rakshasetu-backend-cb1s.onrender.com/'|
 ---
 
 ## 🛠️ Tech Stack
