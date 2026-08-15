@@ -5,6 +5,10 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 # Support PostgreSQL or fallback to SQLite for local development
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./tourist_safety.db")
 
+# Fix Render / Heroku postgres:// -> postgresql:// for SQLAlchemy
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 # SQLite needs connect_args check_same_thread=False
 if DATABASE_URL.startswith("sqlite"):
     engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
