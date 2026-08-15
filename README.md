@@ -1,417 +1,295 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/Smart%20India%20Hackathon-SIH260483-orange?style=for-the-badge&logo=india&logoColor=white" />
-<img src="https://img.shields.io/badge/Status-OPERATIONAL-brightgreen?style=for-the-badge" />
-<img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge" />
-
 # 🛡️ RakshaSetu
-### *Smart Tourist Safety Monitoring & Incident Response System*
 
-> **AI-powered geofencing • Real-time WebSocket dispatch • Blockchain-anchored audit trail**  
-> Built for the **Smart India Hackathon 2026 (Problem ID: SIH260483)**
+### *Smart Tourist Safety & Incident Response Platform*
 
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
-[![React Native](https://img.shields.io/badge/React%20Native-Expo-61DAFB?style=flat-square&logo=react)](https://reactnative.dev/)
-[![React](https://img.shields.io/badge/Dashboard-React%20+%20Vite-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
-[![Scikit-Learn](https://img.shields.io/badge/ML-scikit--learn-F7931E?style=flat-square&logo=scikit-learn)](https://scikit-learn.org/)
-[![Hardhat](https://img.shields.io/badge/Blockchain-Hardhat%20+%20Solidity-yellow?style=flat-square&logo=ethereum)](https://hardhat.org/)
-[![SQLite](https://img.shields.io/badge/Database-SQLite%20%2F%20SQLAlchemy-003B57?style=flat-square&logo=sqlite)](https://www.sqlite.org/)
+[![SIH 2026](https://img.shields.io/badge/SIH-2026-blue?style=for-the-badge&logo=india)](https://www.sih.gov.in)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
+[![Blockchain](https://img.shields.io/badge/Blockchain-Audit%20Trail-orange?style=for-the-badge)](https://ethereum.org)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+> **RakshaSetu** bridges the gap between tourist safety and emergency response across India — powered by AI risk prediction, Aadhaar-backed Digital Identity (DID), Pan-India geofencing, and immutable blockchain audit trails.
 
 </div>
 
 ---
 
-## 📌 Table of Contents
+## 📖 Table of Contents
 
 - [Overview](#-overview)
 - [Key Features](#-key-features)
-- [System Architecture](#️-system-architecture)
+- [Live Demo](#-live-demo)
 - [Tech Stack](#-tech-stack)
-- [Monorepo Structure](#-monorepo-structure)
-- [Quick Start](#-quick-start)
-- [Demo Accounts](#-demo-accounts)
-- [API Reference](#-api-reference)
-- [ML Risk Engine](#-ml-risk-engine)
-- [Blockchain Audit Trail](#-blockchain-audit-trail)
-- [Interactive Demo](#-interactive-demo)
-- [Team & Hackathon Context](#-team--hackathon-context)
-- [License](#-license)
+- [Architecture](#-architecture)
+- [Dashboard Modules](#-dashboard-modules)
+- [Pan-India Coverage](#-pan-india-coverage)
+- [Tourist Registry](#-tourist-registry)
+- [Getting Started](#-getting-started)
+- [Project Structure](#-project-structure)
+- [Team](#-team)
 
 ---
 
 ## 🌍 Overview
 
-**RakshaSetu** is a full-stack, production-grade safety monitoring platform designed to protect tourists in real-time. The system combines **AI-driven risk prediction**, **geo-fencing with offline resilience**, and a **tamper-proof blockchain audit trail** into a single unified platform.
+**RakshaSetu** (रक्षासेतु / ರಕ್ಷಾಸೇತು) is a full-stack, real-time tourist safety command platform built for **Smart India Hackathon 2026**. It enables authorities to monitor tourists across all Indian states, detect geofence breaches, predict risk via ML regression, and manage the full emergency response lifecycle — all immutably recorded on a blockchain audit trail.
 
-When a tourist enters a high-risk zone or triggers an SOS, authorities are alerted via sub-second WebSocket dispatch — even if the tourist is temporarily offline.
-
-```
-Tourist → Mobile App → FastAPI Backend → Authority Dashboard
-                 ↓              ↓               ↓
-           Geofencing     Risk Engine      Live WebSocket
-           (Haversine)   (ML Model)        Incident Dispatch
-                                 ↓
-                         Blockchain Audit
-                       (Tamper-proof Hash)
-```
+The platform supports **three languages** (English, Hindi, Kannada) and operates across **12 Pan-India monitoring hubs** spanning Kashmir to Kerala and Rajasthan to Meghalaya.
 
 ---
 
 ## ✨ Key Features
 
 | Feature | Description |
-|--------|-------------|
-| 🗺️ **Dynamic AI Geofencing** | Real-time zone radius & risk scores updated by ML, not hardcoded |
-| 📡 **Offline-First SOS** | Distress events are queued locally and synced when connectivity returns |
-| 🤖 **Predictive Risk Engine** | Linear Regression model scoring 0–100 using crowd density, time, history |
-| 🔗 **Blockchain Audit Trail** | SHA-256 incident hashes anchored to Ethereum via `TouristSafetyAudit.sol` |
-| ⚡ **Real-time WebSockets** | Bi-directional event pipeline — authority dashboard updates in under 1 second |
-| 🆔 **Aadhaar DID Integration** | Tourist digital identity verified using a blockchain-backed decentralized ID |
-| 🚨 **SOS Escalation Pipeline** | NEW → VERIFIED → ASSIGNED → RESPONDING → RESOLVED lifecycle tracking |
-| 🔒 **Privacy by Design** | Zero PII pushed to blockchain — only canonical SHA-256 digests |
-| 📊 **Authority Command Center** | Live incident heatmap, analytics, and responder dispatch dashboard |
+|---|---|
+| 🗺️ **Pan-India Live Geo-Fence Map** | Real-time radar with region selector (North / West / South / East-NE) and live GPS drift simulation |
+| 🤖 **Dynamic AI Risk Engine** | ML regression model (R² = 0.9658) scoring risk from crowd density, crime rate, lighting, rainfall, and patrol coverage |
+| 🆔 **Aadhaar DID Registry** | Privacy-preserving decentralized digital identity for each tourist, verified on-chain |
+| 🚨 **Incident Lifecycle Manager** | Full dispatch workflow: NEW → VERIFIED → ASSIGNED → RESPONDING → RESOLVED with blockchain hash sealing |
+| ⛓️ **Blockchain Audit Trail** | Tamper-proof smart contract (TouristSafetyAudit.sol) recording every incident state transition |
+| 📞 **Emergency Contact Manager** | Primary/secondary contact management with push broadcast to all monitored nodes |
+| 📱 **Tourist Mobile App Simulator** | Interactive prototype of the tourist-facing RakshaSetu mobile application |
+| 🌐 **Multi-Language Support** | English, हिन्दी, ಕನ್ನಡ — switchable at runtime |
 
 ---
 
-## 🏛️ System Architecture
+## 🔗 Live Demo
 
-```
-                         TOURIST
-                            │
-                            ▼
-                    REACT NATIVE APP
-                     (JavaScript/JSX)
-                            │
-            ┌───────────────┼───────────────┐
-            ▼               ▼               ▼
-           GPS          GEOFENCING          SOS
-      (Expo-Loc)    (Edge Haversine)  (Offline Queue)
-            │               │               │
-            └───────────────┼───────────────┘
-                            ▼
-                     FASTAPI BACKEND
-                     (REST / WebSockets)
-                            │
-            ┌───────────────┼───────────────┐
-            ▼               ▼               ▼
-       SQLite/PG        RISK ENGINE      WEBSOCKET
-     (Core DB/Logs) (Scikit-Learn ML) (Live Dispatch)
-                            │               │
-                            ▼               ▼
-                    LINEAR REGRESSION  AUTHORITY DASHBOARD
-                    (Dynamic 0–100)    (React + Vite + Recharts)
-                            │
-                            ▼
-                    ETHEREUM / HARDHAT
-                    (TouristSafetyAudit.sol)
-                            │
-                            ▼
-                   INCIDENT AUDIT TRAIL
-```
-
-### Traditional vs. RakshaSetu Architecture
-
-| Capability | Traditional | RakshaSetu |
-|-----------|------------|-------------|
-| **Geofencing** | Static hardcoded circles | Dynamic AI-assisted zones with live risk scores |
-| **Network Resilience** | Fails offline | Edge cache + local Haversine + offline SOS queue |
-| **Risk Assessment** | Reactive warnings only | Predictive ML scoring with historical patterns |
-| **Routing** | Shortest path | Risk-aware routing avoiding hazard sectors |
-| **Incident Integrity** | Mutable DB records | Tamper-proof hash via blockchain smart contract |
-| **Authority Response** | Async SMS/Email | Real-time bi-directional WebSocket pipeline |
+| Interface | URL |
+|---|---|
+| 📊 **Command Dashboard** (React + Vite) | `http://localhost:5173/` |
+| 📱 **Tourist App Demo** (HTML Prototype) | `http://localhost:3000/demo.html` |
+| ⚡ **Backend API Docs** | `http://localhost:8000/docs` |
 
 ---
 
-## 🛠 Tech Stack
+## 🛠️ Tech Stack
+
+### Frontend — Command Dashboard
+- **React 18** + **Vite 6** — fast HMR development
+- **Tailwind CSS** — utility-first styling with glassmorphism design
+- **Lucide React** — premium icon system
+- **Custom CSS** — animated radar, pulse rings, gradient panels
+
+### Frontend — Tourist Mobile Prototype  
+- **Standalone HTML** (`demo.html`) — zero-dependency, fully interactive
+- **CSS Animations** — geofence alerts, SOS pulse, risk transitions
+- **Vanilla JS** — Pan-India location simulator, profile switcher
 
 ### Backend
-- **FastAPI 0.115** — Async REST + WebSocket server
-- **SQLAlchemy 2.0** — ORM with SQLite (dev) / PostgreSQL (prod)
-- **Python-JOSE** — JWT authentication & role-based access
-- **Passlib + bcrypt** — Secure password hashing
-- **Uvicorn** — ASGI production server
+- **Python 3.11** + **FastAPI** — async REST API
+- **SQLite** (dev) / **PostgreSQL** (prod) — tourist & incident storage
+- **Pydantic v2** — strict schema validation
+- **JWT Auth** — authority session tokens
 
-### Frontend — Authority Dashboard
-- **React 18 + Vite** — Lightning-fast dev + production builds
-- **TailwindCSS** — Utility-first styling
-- **Recharts** — Live incident analytics & heatmaps
-- **Lucide React** — Icon system
+### Blockchain Layer
+- **Solidity** (TouristSafetyAudit.sol) — immutable incident audit contract
+- **Ethers.js** — wallet integration layer
+- **SHA-256** — deterministic incident hash generation
 
-### Mobile App
-- **React Native + Expo** — Cross-platform iOS/Android
-- **Zustand** — Lightweight state management
-- **expo-location** — GPS polling & background tracking
-- **expo-secure-store** — Encrypted local credential storage
-- **NetInfo** — Connectivity detection for offline queue
-
-### ML Risk Engine
-- **scikit-learn 1.6** — Linear Regression risk scoring (0–100)
-- **pandas + numpy** — Dataset generation & feature engineering
-- **joblib** — Model serialization (`.pkl`)
-
-### Blockchain
-- **Hardhat** — Ethereum development framework
-- **Solidity** — `TouristSafetyAudit.sol` smart contract
-- **Ethers.js** — Contract interaction
+### Mobile App (React Native)
+- **Expo** + **React Native** — iOS & Android
+- **i18n** — `en.json`, `hi.json`, `kn.json` locale files
+- **Expo Location** — GPS telemetry
 
 ---
 
-## 📁 Monorepo Structure
+## 🏗️ Architecture
 
 ```
-tourist_safe/
-├── mobile/                  # Tourist Mobile App (React Native + Expo)
-│   ├── App.js               # Root application entry
-│   ├── app.json             # Expo config & permissions
-│   └── src/
-│       ├── components/      # RiskBadge, SOSButton, RiskZoneMarker, IncidentCard
-│       ├── screens/         # Home, SafetyMap, SOS, IncidentReport, DigitalIdentity
-│       ├── navigation/      # Stack & Bottom Tab Navigators
-│       ├── services/        # API, Geofencing, Location, Offline Queue, WebSocket
-│       ├── store/           # Zustand stores (auth, location, risk, incidents)
-│       └── utils/           # Haversine distance, risk classification, local storage
-│
-├── backend/                 # FastAPI Core API & Telemetry Dispatch
-│   ├── app/
-│   │   ├── main.py          # FastAPI app, CORS, WebSocket endpoints, lifespan
-│   │   ├── models/          # SQLAlchemy models (Users, Tourists, RiskZones, Incidents)
-│   │   ├── schemas/         # Pydantic request/response schemas
-│   │   ├── routers/         # REST endpoints (Auth, Risk, Incidents, SOS, Blockchain)
-│   │   ├── services/        # Business logic, Risk engine bridge, Incident lifecycle
-│   │   ├── websocket/       # Bi-directional WebSocket connection manager
-│   │   ├── auth/            # JWT & role-based access control
-│   │   └── database/        # Connection pool & demo database seeder
-│   └── requirements.txt
-│
-├── dashboard/               # Authority Command & Control Center (React + Vite)
-│   ├── src/                 # Incident dispatch, live map, analytics, blockchain audit
-│   ├── index.html
-│   └── package.json
-│
-├── ml/                      # Dynamic Risk Engine (scikit-learn)
-│   ├── dataset/             # Synthetic tourist hazard & crowd dataset
-│   ├── generate_dataset.py  # Realistic data generator
-│   ├── feature_engineering.py
-│   ├── train_model.py       # Linear Regression training (MAE, RMSE, R²)
-│   ├── evaluate_model.py    # Evaluation & diagnostic metrics
-│   ├── predict.py           # Runtime inference loader
-│   └── model.pkl            # Trained model artifact
-│
-├── blockchain/              # Tamper-proof Incident Audit (Solidity + Hardhat)
-│   ├── contracts/
-│   │   └── TouristSafetyAudit.sol
-│   ├── scripts/deploy.js
-│   ├── test/
-│   └── hardhat.config.js
-│
-├── docs/                    # Technical Documentation
-│   ├── architecture.md
-│   ├── api.md
-│   ├── ml.md
-│   ├── blockchain.md
-│   └── demo.md              # 30-Step SIH Jury Demo Script
-│
-└── demo.html                # Fully self-contained interactive demo
+┌─────────────────────────────────────────────────────────┐
+│                     RakshaSetu Platform                 │
+├────────────────┬────────────────┬───────────────────────┤
+│  Tourist App   │  Authority     │  Backend API          │
+│  (React Native)│  Dashboard     │  (FastAPI + Python)   │
+│  Expo + i18n   │  (React+Vite)  │                       │
+└───────┬────────┴───────┬────────┴──────────┬────────────┘
+        │                │                   │
+        ▼                ▼                   ▼
+┌───────────────┐ ┌─────────────┐  ┌───────────────────┐
+│  Aadhaar DID  │ │  Geofence   │  │  PostgreSQL / SQLite│
+│  Verify Layer │ │  ML Engine  │  │  Incident Store    │
+└───────────────┘ └─────────────┘  └───────────────────┘
+        │                │
+        └────────┬────────┘
+                 ▼
+        ┌─────────────────┐
+        │  Blockchain      │
+        │  Audit Trail     │
+        │  (Solidity)      │
+        └─────────────────┘
 ```
 
 ---
 
-## ⚡ Quick Start
+## 📊 Dashboard Modules
+
+### 1. 🌐 Overview & Telemetry
+Live KPI cards: active incidents, geo-fence count, tourists monitored (1,024+), and average response time (3.8 min vs 5.0 min SLA). Shows the top 3 incident feed with inline dispatch actions.
+
+### 2. 🗺️ Pan-India Live Geo-Fence Map
+- **Region Selector** — filter by National / North / West / South / East-NE sectors
+- **Live GPS Drift Toggle** — simulates real-time tourist movement across monitored hubs
+- **Risk Zone Rings** — color-coded circles (Emerald = Safe, Amber = Moderate, Orange = High, Red = Critical)
+- **Tourist Pins** — clickable pins with hover cards showing name, state origin, location, risk score
+
+### 3. 🚨 Incident Lifecycle
+Full table with severity badges, status workflow buttons (Verify / Assign Unit / Dispatch / Resolve), and blockchain hash display on resolution.
+
+### 4. 🤖 Dynamic AI Risk Engine
+Interactive sliders for: Crowd Density, Historical Crime Rate, Street Lighting Score, Time of Day, Police Patrols. ML regression computes live risk score (0–100) with R² = 0.9658.
+
+### 5. 👥 Monitored Tourists
+Pan-India grid with region filter. Each card shows: name, state origin, nationality, DID, current location, battery, risk classification, emergency contact, GPS coordinates.
+
+### 6. ⛓️ Blockchain Audit Trail
+Smart contract explorer showing all incident hashes, wallet addresses, and tamper-proof records.
+
+### 7. 📞 Emergency Contacts
+Add/edit/remove emergency contacts with primary flag and push broadcast to all monitored tourists.
+
+### 8. 📱 Tourist Mobile App Simulator
+Embedded interactive prototype of the tourist-facing app: SOS button, safety map, incident tracker, profile page.
+
+---
+
+## 🇮🇳 Pan-India Coverage
+
+| Hub | State | Risk Level |
+|---|---|---|
+| Dal Lake Corridor | Jammu & Kashmir | 🟢 Monitored Safe |
+| Rohtang Glacier Pass | Himachal Pradesh | 🔴 Alpine Critical |
+| Amer Fort Ramparts | Rajasthan | 🟢 Heritage Safe |
+| Thar Remote Dunes | Rajasthan | 🔴 Desert High |
+| Baga Beach Coastal Strip | Goa | 🔴 High Tide Risk |
+| Marine Drive Boulevard | Maharashtra | 🟡 Moderate |
+| Munnar Gap Road | Kerala | 🔴 Landslide Zone |
+| Cubbon Park Hub | Karnataka | 🟢 Safe Corridor |
+| Dashashwamedh Ghat | Uttar Pradesh | 🔴 Crowd Surge |
+| Cherrapunji Root Bridges | Meghalaya | 🟡 Eco Moderate |
+
+---
+
+## 👤 Tourist Registry (Sample)
+
+| Name | State | Tourist Code | Status |
+|---|---|---|---|
+| Aarav Sharma | Delhi / NCR | TR-DEL-901 | Safe |
+| Pooja Deshmukh | Maharashtra | TR-MAH-771 | Safe |
+| Mahalasa Rao | Karnataka | TR-KAR-102 | Safe |
+| Subhashree Sen | West Bengal | TR-WB-442 | Safe |
+| Tenzin Norbu | Ladakh | TR-LAD-883 | Monitoring |
+| Ananya Nambiar | Kerala | TR-KER-331 | Monitoring |
+| Vikramaditya Rathore | Rajasthan | TR-RAJ-554 | **SOS ACTIVE** |
+| Zoya Qureshi | Jammu & Kashmir | TR-JNK-220 | Safe |
+| Bikash Debbarma | Tripura | TR-TRI-667 | Safe |
+| Rohan Singhania | Gujarat | TR-GUJ-388 | Monitoring |
+| Sophie Martin | France 🇫🇷 | TR-INT-FRA | Safe |
+| David Miller | Australia 🇦🇺 | TR-INT-AUS | Safe |
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.11+
-- Node.js 18+ & npm
-- Git
+- Node.js ≥ 18
+- Python ≥ 3.11
+- npm / pip
 
-### 1️⃣ Clone the Repository
-
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/A760-st/Tourist_Safe.git
-cd Tourist_Safe
+git clone https://github.com/Adithya2005-spec/tourist_safe.git
+cd tourist_safe
 ```
 
-### 2️⃣ ML Risk Engine — Train Model
-
-```bash
-# Generate synthetic dataset and train the Linear Regression model
-python ml/generate_dataset.py
-python ml/train_model.py
-# Output: ml/model.pkl
-```
-
-### 3️⃣ Backend — FastAPI Server
-
-```bash
-# Install Python dependencies
-pip install -r backend/requirements.txt
-
-# Start FastAPI on port 8000
-python -m uvicorn backend.app.main:app --reload --port 8000
-```
-
-| Endpoint | URL |
-|---------|-----|
-| 🌐 API Root | `http://127.0.0.1:8000` |
-| 📖 Swagger UI | `http://127.0.0.1:8000/docs` |
-| 🔍 OpenAPI JSON | `http://127.0.0.1:8000/openapi.json` |
-| ❤️ Health Check | `http://127.0.0.1:8000/health` |
-
-### 4️⃣ Authority Dashboard — React + Vite
-
+### 2. Start the Command Dashboard
 ```bash
 cd dashboard
 npm install
 npm run dev
-# Dashboard: http://localhost:5173
+# → http://localhost:5173
 ```
 
-### 5️⃣ Blockchain — Smart Contracts
-
+### 3. Start the Tourist Demo Prototype
 ```bash
-cd blockchain
-npm install
-npx hardhat compile
-npx hardhat test
-# Optional local deployment:
-npx hardhat node
-npx hardhat run scripts/deploy.js --network localhost
+# From root directory
+python -m http.server 3000
+# → http://localhost:3000/demo.html
 ```
 
-### 6️⃣ Tourist Mobile App — React Native
+### 4. Start the Backend API
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+# → http://localhost:8000/docs
+```
 
+### 5. Mobile App (React Native)
 ```bash
 cd mobile
 npm install
-npm start
-# Press 'w' for web preview
-# Scan QR code via Expo Go on Android/iOS
+npx expo start
 ```
 
-### 7️⃣ Interactive Demo (No Setup Required)
-
-Open `demo.html` directly in any modern browser for a fully self-contained demo with:
-- Live risk zone simulation
-- SOS trigger & incident lifecycle
-- Authority dashboard preview
-- Blockchain audit trail visualization
-
 ---
 
-## 🔑 Demo Accounts
-
-| Role | Username / Email | Password | Description |
-|------|-----------------|----------|-------------|
-| 👤 **Tourist** | `tourist` or `tourist@example.com` | `tourist123` | Code: `TOURIST-1024` (Aadhaar DID Verified) |
-| 🏛️ **Authority** | `authority` or `authority@safety.gov.in` | `authority123` | Central Emergency Command Center |
-
----
-
-## 📡 API Reference
-
-The full API is documented at `/docs` (Swagger UI) when the backend is running.
-
-### Key Endpoints
-
-```http
-POST   /auth/login              → JWT token for tourist or authority
-GET    /risk/zones              → All active risk zones with ML scores
-POST   /incidents/              → Report a new tourist incident
-GET    /incidents/{id}          → Incident detail with blockchain hash
-PUT    /incidents/{id}/status   → Update incident lifecycle status
-POST   /sos/trigger             → Trigger SOS with offline queue support
-GET    /blockchain/audit/{id}   → Fetch on-chain audit hash for incident
-WS     /ws                      → Generic WebSocket (tourist/authority)
-WS     /ws/tourist/{code}       → Tourist-specific real-time channel
-```
-
-For full schema documentation see [`docs/api.md`](docs/api.md).
-
----
-
-## 🤖 ML Risk Engine
-
-The **Dynamic Risk Engine** uses a scikit-learn **Linear Regression** model trained on a synthetic dataset of tourist hazard scenarios.
-
-### Features Used
-
-| Feature | Description |
-|---------|-------------|
-| `crowd_density` | Estimated people per 100m² |
-| `incident_history_score` | Normalized historical incident count |
-| `time_of_day` | Hour (0–23) encoded |
-| `weather_severity` | 0 (clear) → 4 (severe) |
-| `distance_to_nearest_responder` | km |
-| `zone_type_encoded` | Beach, mountain, urban, forest, etc. |
-
-### Output
-
-- **Risk Score: 0–100** (0 = safe, 100 = critical)
-- Scores are dynamically re-evaluated every 5 minutes
-- Model metrics: **MAE ~4.2**, **RMSE ~5.8**, **R² ~0.91**
-
-See [`docs/ml.md`](docs/ml.md) for full feature documentation.
-
----
-
-## 🔗 Blockchain Audit Trail
-
-The `TouristSafetyAudit.sol` smart contract provides an immutable, tamper-proof record of every incident.
-
-### Privacy Architecture
+## 📁 Project Structure
 
 ```
-Tourist Incident Data (PII stays in DB)
-          │
-          ▼
-    SHA-256 Canonical Digest
-          │
-          ▼
-    TouristSafetyAudit.sol  ← Only hash pushed on-chain
-          │
-          ▼
-    Ethereum Ledger (Hardhat / Mainnet)
+tourist_safe/
+├── dashboard/              # React + Vite Command Dashboard
+│   ├── src/
+│   │   ├── App.jsx         # Main dashboard (8 tabs, Pan-India data)
+│   │   ├── index.css       # Glassmorphism styles
+│   │   └── main.jsx
+│   ├── index.html
+│   └── package.json
+│
+├── backend/                # FastAPI REST Backend
+│   ├── app/
+│   │   ├── main.py         # API routes & FastAPI app
+│   │   ├── models.py       # Pydantic schemas
+│   │   └── database.py     # SQLite / PostgreSQL
+│   └── requirements.txt
+│
+├── mobile/                 # React Native Tourist App
+│   ├── src/
+│   │   ├── screens/        # Home, Map, SOS, Profile, Settings
+│   │   └── i18n/           # en.json, hi.json, kn.json
+│   └── app.json
+│
+├── blockchain/             # Solidity Smart Contracts
+│   └── TouristSafetyAudit.sol
+│
+├── demo.html               # Standalone Tourist App HTML Prototype
+└── README.md
 ```
 
-**Zero PII is ever written to the blockchain.** Only the SHA-256 digest of the incident is anchored on-chain, satisfying privacy regulations while guaranteeing tamper evidence.
-
-See [`docs/blockchain.md`](docs/blockchain.md) for full specs.
-
 ---
 
-## 🎬 Interactive Demo
+## 👨‍💻 Team
 
-> **No setup required.** Open `demo.html` in any modern browser.
+**RakshaSetu** — Built for **Smart India Hackathon 2026**
 
-The self-contained demo includes:
-- 🗺️ **Live Safety Map** — Real-time tourist locations & risk zone overlays
-- 🚨 **SOS Panel** — One-tap distress trigger with GPS coordinates
-- 📊 **Authority Dashboard** — Incident heatmap, analytics, responder assignment
-- ⛓️ **Blockchain Audit Viewer** — On-chain hash verification UI
-- 📱 **Mobile App Preview** — Risk badges, offline queue status, digital identity card
-
----
-
-## 👥 Team & Hackathon Context
-
-**Problem Statement:** Develop a Smart Tourist Safety Monitoring & Incident Response System using AI, Geo-Fencing, and Blockchain-based Digital Identity.
-
-**Hackathon:** Smart India Hackathon 2026  
-**Problem ID:** SIH260483  
-**Category:** Government / Tourism Safety  
-
----
-
-## 📄 License
-
-This project is built for the **Smart India Hackathon 2026** as a demonstration prototype.  
-All rights reserved © 2026 RakshaSetu Team — SIH260483.
+| Role | Contribution |
+|---|---|
+| Full-Stack Development | React Dashboard, FastAPI, Pan-India data models |
+| Blockchain Integration | Solidity audit contract, SHA-256 hashing |
+| ML Risk Engine | Regression model (R² = 0.9658), feature engineering |
+| Mobile App | React Native, Expo, multi-language i18n |
+| UI/UX Design | Glassmorphism dashboard, animated radar map |
 
 ---
 
 <div align="center">
 
-**Made with ❤️ for safer tourism in India 🇮🇳**
+**🛡️ RakshaSetu — रक्षासेतु — ರಕ್ಷಾಸೇತು**
 
-*RakshaSetu — Because every tourist deserves to feel safe.*
+*Protecting Every Journey. Connecting Every Emergency.*
+
+[![GitHub](https://img.shields.io/badge/GitHub-Adithya2005--spec-black?style=for-the-badge&logo=github)](https://github.com/Adithya2005-spec/tourist_safe)
 
 </div>

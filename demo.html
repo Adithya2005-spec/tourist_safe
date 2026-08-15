@@ -579,27 +579,61 @@
 </div>
 
 <!-- ═══════════════════════════════════════════ -->
-<!--  DEMO FLOATING PANEL                        -->
+<!--  DEMO FLOATING PANEL (PAN-INDIA SIMULATOR)  -->
 <!-- ═══════════════════════════════════════════ -->
 <div class="demo-fab" id="demoFab">
-  <div class="demo-panel" id="demoPanel">
+  <div class="demo-panel" id="demoPanel" style="max-height:85vh;overflow-y:auto;width:340px;">
     <div class="demo-panel-header">
-      <div class="demo-panel-title">🎮 Demo Simulator</div>
+      <div class="demo-panel-title">🇮🇳 Pan-India Dynamic Simulator</div>
       <button class="close-btn" onclick="toggleDemo()">✕</button>
     </div>
     <div class="demo-panel-body">
-      <div class="demo-hint">Simulate tourist location to trigger geo-fencing rules in real time:</div>
-      <button class="demo-zone-btn safe" onclick="simulateZone('safe')">
-        <span>🟢</span><span>Safe Area (Cubbon Park)</span>
-      </button>
-      <button class="demo-zone-btn moderate" onclick="simulateZone('moderate')">
-        <span>🟡</span><span>Moderate Risk (Vidhana Soudha)</span>
-      </button>
-      <button class="demo-zone-btn danger" onclick="simulateZone('high')">
-        <span>🔴</span><span>High Risk Area (Commercial St.)</span>
-      </button>
-      <hr class="demo-divider"/>
-      <button class="demo-sos-btn" onclick="openSOSModal()">🚨 Trigger SOS</button>
+      <div class="demo-hint" style="font-weight:700;color:var(--text-primary);">👤 Switch Tourist Profile:</div>
+      <select id="touristSelector" onchange="switchTouristProfile(this.value)" style="width:100%;padding:8px 10px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;color:white;font-size:12px;margin-bottom:12px;">
+        <option value="0">Aarav Sharma (Delhi) — Manali Valley</option>
+        <option value="1">Pooja Deshmukh (Maharashtra) — Mumbai Marine Drive</option>
+        <option value="2" selected>Mahalasa Rao (Karnataka) — Bengaluru Hub</option>
+        <option value="3">Subhashree Sen (West Bengal) — Varanasi Ghats</option>
+        <option value="4">Tenzin Norbu (Ladakh) — Rohtang Pass</option>
+        <option value="5">Ananya Nambiar (Kerala) — Munnar Tea Valleys</option>
+        <option value="6">Vikramaditya Rathore (Rajasthan) — Thar Desert</option>
+        <option value="7">Zoya Qureshi (J&K) — Dal Lake Srinagar</option>
+        <option value="8">Sophie Martin (France) — Goa Coastal Strip</option>
+      </select>
+
+      <div class="demo-hint" style="font-weight:700;color:var(--text-primary);margin-top:6px;">📍 Jump to Destination & Risk Zone:</div>
+      <div style="display:grid;grid-template-columns:1fr;gap:6px;">
+        <button class="demo-zone-btn safe" onclick="simulatePanIndiaZone('kashmir')">
+          <span>🟢</span><span>Dal Lake, Srinagar (J&K - Safe)</span>
+        </button>
+        <button class="demo-zone-btn danger" onclick="simulatePanIndiaZone('rohtang')">
+          <span>🔴</span><span>Rohtang Glacier Pass (HP - Critical)</span>
+        </button>
+        <button class="demo-zone-btn safe" onclick="simulatePanIndiaZone('jaipur')">
+          <span>🟢</span><span>Amer Fort, Jaipur (Raj - Safe)</span>
+        </button>
+        <button class="demo-zone-btn danger" onclick="simulatePanIndiaZone('thar')">
+          <span>🔴</span><span>Thar Remote Dunes (Jaisalmer - High)</span>
+        </button>
+        <button class="demo-zone-btn moderate" onclick="simulatePanIndiaZone('goa_danger')">
+          <span>🔴</span><span>Baga Rocky Strip (Goa - High Tide)</span>
+        </button>
+        <button class="demo-zone-btn danger" onclick="simulatePanIndiaZone('kerala')">
+          <span>🔴</span><span>Munnar Gap Road (Kerala - Landslide)</span>
+        </button>
+        <button class="demo-zone-btn safe" onclick="simulatePanIndiaZone('bengaluru_safe')">
+          <span>🟢</span><span>Cubbon Park (Bengaluru - Safe)</span>
+        </button>
+        <button class="demo-zone-btn danger" onclick="simulatePanIndiaZone('varanasi')">
+          <span>🔴</span><span>Dashashwamedh Ghat (Varanasi - Surge)</span>
+        </button>
+        <button class="demo-zone-btn moderate" onclick="simulatePanIndiaZone('meghalaya')">
+          <span>🟡</span><span>Root Bridges (Meghalaya - Moderate)</span>
+        </button>
+      </div>
+
+      <hr class="demo-divider" style="margin:12px 0;"/>
+      <button class="demo-sos-btn" onclick="openSOSModal()">🚨 Trigger Emergency SOS</button>
     </div>
   </div>
   <div class="demo-fab-btn" onclick="toggleDemo()">🎮</div>
@@ -972,68 +1006,81 @@
 
 <script>
 // ═══════════════════════════════════════════════
-//  STATE
+//  PAN-INDIA TOURISTS & ZONES
 // ═══════════════════════════════════════════════
+const touristsList = [
+  { id: 'TR-DEL-901', name: 'Aarav Sharma', state: 'Delhi / NCR', location: 'Solang Valley, Manali (HP)', lat: 32.3166, lng: 77.1578, did: 'did:sih:del-9012' },
+  { id: 'TR-MAH-771', name: 'Pooja Deshmukh', state: 'Maharashtra', location: 'Marine Drive, Mumbai', lat: 18.9438, lng: 72.8232, did: 'did:sih:mah-7711' },
+  { id: 'TR-KAR-102', name: 'Mahalasa Rao', state: 'Karnataka', location: 'Cubbon Park, Bengaluru', lat: 12.9716, lng: 77.5946, did: 'did:sih:kar-1024' },
+  { id: 'TR-WB-442', name: 'Subhashree Sen', state: 'West Bengal', location: 'Dashashwamedh Ghat, Varanasi', lat: 25.3109, lng: 83.0107, did: 'did:sih:wb-4421' },
+  { id: 'TR-LAD-883', name: 'Tenzin Norbu', state: 'Ladakh', location: 'Rohtang Glacier Pass (HP)', lat: 32.3716, lng: 77.2466, did: 'did:sih:lad-8833' },
+  { id: 'TR-KER-331', name: 'Ananya Nambiar', state: 'Kerala', location: 'Munnar Gap Road, Kerala', lat: 10.0889, lng: 77.0595, did: 'did:sih:ker-3319' },
+  { id: 'TR-RAJ-554', name: 'Vikramaditya Rathore', state: 'Rajasthan', location: 'Thar Remote Dunes, Jaisalmer', lat: 26.9157, lng: 70.9083, did: 'did:sih:raj-5544' },
+  { id: 'TR-JNK-220', name: 'Zoya Qureshi', state: 'Jammu & Kashmir', location: 'Dal Lake Boulevard, Srinagar', lat: 34.0837, lng: 74.7973, did: 'did:sih:jnk-2201' },
+  { id: 'TR-INT-FRA', name: 'Sophie Martin', state: 'France (International)', location: 'Baga Beach Coastal Strip, Goa', lat: 15.5524, lng: 73.7517, did: 'did:sih:int-fra-09' }
+];
+
+let activeTourist = touristsList[2]; // Default Mahalasa Rao
+
+const panIndiaZones = {
+  kashmir: { name: 'Dal Lake Safe Water Corridor (Srinagar, J&K)', lat: 34.0837, lng: 74.7973, risk: 'LOW', cx: 330, cy: 150, responder: 'J&K Tourist Police Water Squad' },
+  rohtang: { name: 'Rohtang Alpine Avalanche Zone (Himachal)', lat: 32.3716, lng: 77.2466, risk: 'HIGH', cx: 400, cy: 180, responder: 'SDRF Alpine Snow Rescue Unit 1' },
+  jaipur: { name: 'Amer Fort Heritage Ramparts (Jaipur, Rajasthan)', lat: 26.9855, lng: 75.8513, risk: 'LOW', cx: 340, cy: 260, responder: 'Rajasthan Tourist Assistance Force' },
+  thar: { name: 'Thar Remote Desert Dunes (Jaisalmer, Rajasthan)', lat: 26.9157, lng: 70.9083, risk: 'HIGH', cx: 230, cy: 290, responder: 'Desert Quick Patrol Unit 3' },
+  goa_danger: { name: 'Baga Beach High-Tide Cliff (Goa)', lat: 15.5524, lng: 73.7517, risk: 'HIGH', cx: 290, cy: 380, responder: 'Goa Marine Jet-Rescue Unit 7' },
+  kerala: { name: 'Munnar Gap Road Landslide Sector (Kerala)', lat: 10.0889, lng: 77.0595, risk: 'HIGH', cx: 430, cy: 450, responder: 'Kerala Rapid Disaster Response Team' },
+  bengaluru_safe: { name: 'Cubbon Park Heritage Hub (Bengaluru)', lat: 12.9716, lng: 77.5946, risk: 'LOW', cx: 450, cy: 410, responder: 'Bangalore City PCR Interceptor 4' },
+  varanasi: { name: 'Dashashwamedh Ghat Riverbank (Varanasi, UP)', lat: 25.3109, lng: 83.0107, risk: 'HIGH', cx: 580, cy: 270, responder: 'UP Tourism Police Ghat Patrol 5' },
+  meghalaya: { name: 'Cherrapunji Living Root Bridges (Meghalaya)', lat: 25.2702, lng: 91.7323, risk: 'MEDIUM', cx: 720, cy: 260, responder: 'Meghalaya Eco-Safety Patrol' }
+};
+
 const state = {
   currentRisk: 'LOW',
-  currentArea: 'Cubbon Park (Safe Zone)',
+  currentArea: 'Cubbon Park Heritage Hub (Bengaluru)',
   currentLat: 12.9716,
   currentLng: 77.5946,
   geoAlertDismissed: false,
   activeIncident: null,
   incidents: [
     {
-      id: 'INC-1022',
-      touristId: 'TR-5412',
-      touristName: 'Emily Watson',
-      type: 'Medical Alert',
-      severity: 'MEDIUM',
+      id: 'INC-3091',
+      touristId: 'TR-LAD-883',
+      touristName: 'Tenzin Norbu',
+      type: 'Alpine Blizzard Distress',
+      severity: 'HIGH',
       status: 'RESOLVED',
-      lat: 12.9750,
-      lng: 77.5980,
-      time: '11:15 AM',
+      lat: 32.3716,
+      lng: 77.2466,
+      time: '09:30 AM',
       timeline: [
-        { text: 'Alert Triggered', sub: '11:15 AM', done: true },
-        { text: 'Responder Assigned', sub: '11:22 AM', done: true },
-        { text: 'Assistance Provided', sub: '11:40 AM', done: true },
-        { text: 'Incident Resolved', sub: '12:05 PM', done: true },
+        { text: 'SOS Beacon Activated', sub: '09:30 AM', done: true },
+        { text: 'SDRF Alpine Unit Dispatched', sub: '09:34 AM', done: true },
+        { text: 'Thermal Assistance Deployed', sub: '09:50 AM', done: true },
+        { text: 'Incident Resolved & Sealed On-Chain', sub: '10:15 AM', done: true },
       ],
-      hash: '0x8fa1cd349fe88b201a09887712bd'
+      hash: '0x9f83b2a75d31481e7d23a41bc978d10b719468e2ef84a1d48c081c70e0a5c4e9'
     }
   ],
   selectedIncident: null
 };
 
-const zones = {
-  safe: { name: 'Cubbon Park (Safe Zone)', lat: 12.9716, lng: 77.5946, risk: 'LOW', cx: 300, cy: 270 },
-  moderate: { name: 'Vidhana Soudha (Moderate Risk)', lat: 12.9750, lng: 77.5980, risk: 'MEDIUM', cx: 480, cy: 200 },
-  high: { name: 'Commercial Street (High Risk)', lat: 12.9800, lng: 77.6050, risk: 'HIGH', cx: 570, cy: 340 }
-};
-
-// ═══════════════════════════════════════════════
-//  NAVIGATION
-// ═══════════════════════════════════════════════
-function enterApp() {
-  document.getElementById('splashScreen').style.display = 'none';
-  document.getElementById('appShell').style.display = 'flex';
-  showScreen('home');
+function switchTouristProfile(index) {
+  activeTourist = touristsList[Number(index)] || touristsList[0];
+  const nameEl = document.querySelector('.tourist-name');
+  const idEl = document.querySelector('.tourist-id');
+  if (nameEl) nameEl.textContent = activeTourist.name + ' (' + activeTourist.state + ')';
+  if (idEl) idEl.textContent = 'ID: ' + activeTourist.id;
+  
+  state.currentLat = activeTourist.lat;
+  state.currentLng = activeTourist.lng;
+  state.currentArea = activeTourist.location;
+  updateRiskUI();
+  showToast('👤 Switched profile to: ' + activeTourist.name + ' (' + activeTourist.state + ')');
 }
 
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-  const navEl = document.getElementById('nav-' + name);
-  if (navEl) navEl.classList.add('active');
-  if (name === 'incident') renderIncidentScreen();
-  if (name === 'dashboard') renderDashboard();
-}
-
-// ═══════════════════════════════════════════════
-//  GEO-FENCE & RISK ENGINE
-// ═══════════════════════════════════════════════
-function simulateZone(type) {
-  const zone = zones[type];
+function simulatePanIndiaZone(key) {
+  const zone = panIndiaZones[key];
+  if (!zone) return;
   state.currentArea = zone.name;
   state.currentLat = zone.lat;
   state.currentLng = zone.lng;
@@ -1043,12 +1090,13 @@ function simulateZone(type) {
   updateMapMarker(zone.cx, zone.cy);
   updateRiskUI();
 
-  if (type === 'high' && !state.activeIncident) {
+  if (zone.risk === 'HIGH' && !state.activeIncident) {
     showGeoAlert(zone.name);
   } else {
     dismissGeoAlert();
   }
   toggleDemo();
+  showToast('📍 Teleported to: ' + zone.name);
 }
 
 function updateMapMarker(cx, cy) {
@@ -1157,10 +1205,10 @@ function confirmSOS() {
 
   const newInc = {
     id: incId,
-    touristId: 'TR-8842',
-    touristName: 'Rohan Sharma',
-    type: 'SOS',
-    severity: 'HIGH',
+    touristId: activeTourist.id,
+    touristName: activeTourist.name + ' (' + activeTourist.state + ')',
+    type: 'SOS Distress Call',
+    severity: 'CRITICAL',
     status: 'NEW',
     lat: state.currentLat,
     lng: state.currentLng,
@@ -1168,8 +1216,8 @@ function confirmSOS() {
     area: state.currentArea,
     timeline: [
       { text: 'SOS Triggered', sub: timeStr, done: true },
-      { text: 'Incident Recorded in Secure Ledger', sub: 'Blockchain hash generated', done: true },
-      { text: 'Emergency Authority Notified', sub: 'Dashboard alert sent', done: true },
+      { text: 'Incident Recorded in Secure Ledger', sub: 'Audit hash generated on-chain', done: true },
+      { text: 'Emergency Authority Notified', sub: 'Dashboard telemetry dispatch sent', done: true },
       { text: 'Responder Assigned', sub: 'Awaiting dispatch...', done: false },
       { text: 'Responder En Route', sub: 'Pending...', done: false },
       { text: 'Incident Resolved', sub: 'Pending...', done: false },
