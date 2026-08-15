@@ -8,7 +8,7 @@
 ### *Smart Tourist Safety Monitoring & Incident Response System*
 
 > **AI-powered geofencing • Real-time WebSocket dispatch • Blockchain-anchored audit trail**  
-> Built for the **Smart India Hackathon 2024 (Problem ID: SIH260483)**
+> Built for the **Smart India Hackathon 2026 (Problem ID: SIH260483)**
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![React Native](https://img.shields.io/badge/React%20Native-Expo-61DAFB?style=flat-square&logo=react)](https://reactnative.dev/)
