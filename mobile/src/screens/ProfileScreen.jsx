@@ -94,7 +94,7 @@ export default function ProfileScreen({ navigation }) {
           <Text style={styles.logoutText}>🚪 {t('settings.logout')}</Text>
         </TouchableOpacity>
 
-        <Text style={styles.versionText}>TouristSafe v1.0.0 • SIH260483</Text>
+        <Text style={styles.versionText}>RakshaSetu v1.0.0 • SIH260483</Text>
       </ScrollView>
     </SafeAreaView>
   );

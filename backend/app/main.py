@@ -23,8 +23,8 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(
-    title="TouristSafe API - SIH260483",
-    description="Smart Tourist Safety Monitoring & Incident Response System using AI, Geo-Fencing, and Blockchain-based Digital Identity",
+    title="RakshaSetu API - SIH260483",
+    description="RakshaSetu: Smart Tourist Safety Monitoring & Incident Response System using AI, Geo-Fencing, and Blockchain-based Digital Identity",
     version="1.0.0",
     lifespan=lifespan
 )
@@ -53,7 +53,7 @@ app.include_router(blockchain.router)
 @app.get("/", tags=["Health & Meta"])
 def root():
     return {
-        "system": "Smart Tourist Safety Monitoring & Incident Response System",
+        "system": "RakshaSetu: Smart Tourist Safety Monitoring & Incident Response System",
         "hackathon": "Smart India Hackathon (SIH260483)",
         "version": "1.0.0",
         "status": "OPERATIONAL",

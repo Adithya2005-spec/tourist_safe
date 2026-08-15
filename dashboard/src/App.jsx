@@ -44,7 +44,7 @@ import {
 
 const TRANSLATIONS = {
   en: {
-    title: 'TouristSafe',
+    title: 'RakshaSetu',
     sub: 'Smart Tourist Safety & Incident Response System',
     overview: 'Overview & Telemetry',
     liveMap: 'Live Geo-Fence Map',
@@ -75,7 +75,7 @@ const TRANSLATIONS = {
     remaining: 'Remaining',
   },
   hi: {
-    title: 'टूरिस्टसेफ',
+    title: 'रक्षासेतु',
     sub: 'स्मार्ट पर्यटक सुरक्षा और आपातकालीन प्रतिक्रिया प्रणाली',
     overview: 'सिंहावलोकन और टेलीमेट्री',
     liveMap: 'लाइव जियो-फेंस मानचित्र',
@@ -106,7 +106,7 @@ const TRANSLATIONS = {
     remaining: 'शेष समय',
   },
   kn: {
-    title: 'ಟೂರಿಸ್ಟ್‌ಸೇಫ್',
+    title: 'ರಕ್ಷಾಸೇತು',
     sub: 'ಸ್ಮಾರ್ಟ್ ಪ್ರವಾಸಿ ಸುರಕ್ಷತೆ ಮತ್ತು ತುರ್ತು ಪ್ರತಿಕ್ರಿಯೆ ವ್ಯವಸ್ಥೆ',
     overview: 'ಅವಲೋಕನ ಮತ್ತು ಟೆಲಿಮೆಟ್ರಿ',
     liveMap: 'ಲೈವ್ ಜಿಯೋ-ಫೆನ್ಸ್ ನಕ್ಷೆ',

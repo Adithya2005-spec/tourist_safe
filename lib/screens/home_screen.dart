@@ -107,7 +107,7 @@ class HomeScreen extends StatelessWidget {
             Icon(Icons.shield, color: theme.colorScheme.primary),
             const SizedBox(width: 8),
             const Text(
-              "TouristSafe",
+              "RakshaSetu",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],

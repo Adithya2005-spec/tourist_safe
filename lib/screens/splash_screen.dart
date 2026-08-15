@@ -95,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       ),
                       const SizedBox(height: 32),
                       const Text(
-                        "TouristSafe",
+                        "RakshaSetu",
                         style: TextStyle(
                           fontSize: 38,
                           fontWeight: FontWeight.bold,

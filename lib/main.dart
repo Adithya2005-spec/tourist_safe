@@ -7,18 +7,18 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (context) => MockBackendService(),
-      child: const TouristSafeApp(),
+      child: const RakshaSetuApp(),
     ),
   );
 }
 
-class TouristSafeApp extends StatelessWidget {
-  const TouristSafeApp({super.key});
+class RakshaSetuApp extends StatelessWidget {
+  const RakshaSetuApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TouristSafe - Smart Safety Hub',
+      title: 'RakshaSetu - Smart Safety Hub',
       debugShowCheckedModeBanner: false,
       
       // Premium M3 Dark Theme configuration matching high-fidelity safety tech

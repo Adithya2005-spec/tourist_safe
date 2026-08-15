@@ -27,7 +27,7 @@ export default function SplashScreen({ navigation }) {
       <View style={styles.logoBadge}>
         <Text style={styles.shieldEmoji}>🛡️</Text>
       </View>
-      <Text style={styles.title}>TouristSafe</Text>
+      <Text style={styles.title}>RakshaSetu</Text>
       <Text style={styles.subtitle}>Smart Tourist Safety & Incident Response</Text>
       <View style={styles.taglineBadge}>
         <Text style={styles.taglineText}>AI • Geo-Fencing • Blockchain Digital ID</Text>

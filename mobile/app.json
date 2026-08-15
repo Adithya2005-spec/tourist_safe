@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "TouristSafe",
-    "slug": "touristsafe-mobile",
+    "name": "RakshaSetu",
+    "slug": "rakshasetu-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -12,7 +12,7 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "TouristSafe needs your location to alert you about high-risk zones and route emergency responders."
+        "NSLocationWhenInUseUsageDescription": "RakshaSetu needs your location to alert you about high-risk zones and route emergency responders."
       }
     },
     "android": {

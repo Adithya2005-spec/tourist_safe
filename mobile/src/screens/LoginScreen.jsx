@@ -41,7 +41,7 @@ export default function LoginScreen({ navigation }) {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Text style={styles.logo}>🛡️</Text>
-          <Text style={styles.title}>Tourist Safe Login</Text>
+          <Text style={styles.title}>RakshaSetu Login</Text>
           <Text style={styles.subtitle}>Smart Incident Response & Digital ID</Text>
         </View>
 

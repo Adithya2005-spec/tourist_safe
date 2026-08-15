@@ -4,7 +4,7 @@
 <img src="https://img.shields.io/badge/Status-OPERATIONAL-brightgreen?style=for-the-badge" />
 <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge" />
 
-# 🛡️ TouristSafe
+# 🛡️ RakshaSetu
 ### *Smart Tourist Safety Monitoring & Incident Response System*
 
 > **AI-powered geofencing • Real-time WebSocket dispatch • Blockchain-anchored audit trail**  
@@ -41,7 +41,7 @@
 
 ## 🌍 Overview
 
-**TouristSafe** is a full-stack, production-grade safety monitoring platform designed to protect tourists in real-time. The system combines **AI-driven risk prediction**, **geo-fencing with offline resilience**, and a **tamper-proof blockchain audit trail** into a single unified platform.
+**RakshaSetu** is a full-stack, production-grade safety monitoring platform designed to protect tourists in real-time. The system combines **AI-driven risk prediction**, **geo-fencing with offline resilience**, and a **tamper-proof blockchain audit trail** into a single unified platform.
 
 When a tourist enters a high-risk zone or triggers an SOS, authorities are alerted via sub-second WebSocket dispatch — even if the tourist is temporarily offline.
 
@@ -109,9 +109,9 @@ Tourist → Mobile App → FastAPI Backend → Authority Dashboard
                    INCIDENT AUDIT TRAIL
 ```
 
-### Traditional vs. TouristSafe Architecture
+### Traditional vs. RakshaSetu Architecture
 
-| Capability | Traditional | TouristSafe |
+| Capability | Traditional | RakshaSetu |
 |-----------|------------|-------------|
 | **Geofencing** | Static hardcoded circles | Dynamic AI-assisted zones with live risk scores |
 | **Network Resilience** | Fails offline | Edge cache + local Haversine + offline SOS queue |
@@ -404,7 +404,7 @@ The self-contained demo includes:
 ## 📄 License
 
 This project is built for the **Smart India Hackathon 2024** as a demonstration prototype.  
-All rights reserved © 2024 TouristSafe Team — SIH260483.
+All rights reserved © 2024 RakshaSetu Team — SIH260483.
 
 ---
 
@@ -412,6 +412,6 @@ All rights reserved © 2024 TouristSafe Team — SIH260483.
 
 **Made with ❤️ for safer tourism in India 🇮🇳**
 
-*TouristSafe — Because every tourist deserves to feel safe.*
+*RakshaSetu — Because every tourist deserves to feel safe.*
 
 </div>
