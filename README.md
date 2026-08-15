@@ -395,7 +395,7 @@ The self-contained demo includes:
 
 **Problem Statement:** Develop a Smart Tourist Safety Monitoring & Incident Response System using AI, Geo-Fencing, and Blockchain-based Digital Identity.
 
-**Hackathon:** Smart India Hackathon 2024  
+**Hackathon:** Smart India Hackathon 2026  
 **Problem ID:** SIH260483  
 **Category:** Government / Tourism Safety  
 
@@ -403,8 +403,8 @@ The self-contained demo includes:
 
 ## 📄 License
 
-This project is built for the **Smart India Hackathon 2024** as a demonstration prototype.  
-All rights reserved © 2024 TouristSafe Team — SIH260483.
+This project is built for the **Smart India Hackathon 2026** as a demonstration prototype.  
+All rights reserved © 2026 TouristSafe Team — SIH260483.
 
 ---
 
