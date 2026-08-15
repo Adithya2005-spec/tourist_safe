@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TouristSafe – Smart Tourist Safety & Incident Response | SIH260483</title>
+  <meta name="description" content="Smart Tourist Safety Monitoring & Incident Response System using AI, Geo-Fencing, and Blockchain-based Digital Identity – SIH260483 Prototype" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --border: #334155;
+      --border-light: #475569;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --red: #ef4444;
+      --red-dark: #7f1d1d;
+      --red-glow: rgba(239,68,68,0.15);
+      --orange: #f59e0b;
+      --orange-bg: rgba(245,158,11,0.12);
+      --green: #22c55e;
+      --green-bg: rgba(34,197,94,0.12);
+      --blue: #3b82f6;
+      --blue-bg: rgba(59,130,246,0.12);
+      --radius: 12px;
+      --radius-lg: 18px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── APP SHELL ─────────────────────────────── */
+    .app-shell {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ─── SIDEBAR NAV ──────────────────────────── */
+    .sidebar {
+      width: 240px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .sidebar-brand {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .brand-logo .shield-icon {
+      width: 36px; height: 36px;
+      background: var(--red-glow);
+      border: 1.5px solid rgba(239,68,68,0.4);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .brand-name { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; color: var(--text-primary); }
+    .brand-sub { font-size: 10px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.5px; }
+    .did-badge {
+      margin-top: 12px;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--blue-bg);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 10px; font-weight: 600; color: var(--blue);
+    }
+    .nav-section { padding: 16px 12px 8px; }
+    .nav-label { font-size: 9px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; padding: 0 8px 8px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px; font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      margin-bottom: 2px;
+    }
+    .nav-item:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+    .nav-item.active { background: var(--red-glow); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+    .nav-item .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+    .nav-section-auth { padding: 8px 12px; border-top: 1px solid var(--border); margin-top: auto; }
+    .tourist-card {
+      background: var(--bg-tertiary);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .tourist-name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+    .tourist-id { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* ─── MAIN CONTENT AREA ────────────────────── */
+    .main-area {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--bg-primary);
+    }
+    .screen { display: none; padding: 0; height: 100%; }
+    .screen.active { display: flex; flex-direction: column; }
+
+    /* ─── TOP BAR ──────────────────────────────── */
+    .topbar {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .topbar-title { font-size: 16px; font-weight: 700; }
+    .topbar-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .risk-pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.5px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .risk-pill.low { background: var(--green-bg); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+    .risk-pill.medium { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(245,158,11,0.3); }
+    .risk-pill.high { background: var(--red-glow); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+    .risk-pill.critical { background: var(--red-glow); color: var(--red); border: 2px solid var(--red); animation: pulse-border 1s infinite; }
+
+    @keyframes pulse-border { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+
+    /* ─── SCREEN: SPLASH ───────────────────────── */
+    #screen-splash {
+      background: linear-gradient(135deg, #0f172a 0%, #1a0a2e 50%, #0f172a 100%);
+      align-items: center; justify-content: center;
+      min-height: 100vh;
+    }
+    .splash-content { text-align: center; }
+    .splash-ring-outer {
+      width: 160px; height: 160px;
+      background: rgba(239,68,68,0.06);
+      border: 2px solid rgba(239,68,68,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 32px;
+      animation: ring-pulse 2s ease-in-out infinite;
+    }
+    .splash-ring-inner {
+      width: 110px; height: 110px;
+      background: rgba(239,68,68,0.1);
+      border: 2px solid rgba(239,68,68,0.35);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px;
+    }
+    @keyframes ring-pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
+    .splash-title { font-size: 48px; font-weight: 900; letter-spacing: -1px; margin-bottom: 8px; }
+    .splash-subtitle { font-size: 15px; color: var(--text-secondary); font-weight: 400; margin-bottom: 12px; }
+    .splash-sih { font-size: 11px; color: var(--text-muted); background: var(--bg-secondary); border: 1px solid var(--border); padding: 4px 12px; border-radius: 20px; display: inline-block; }
+    .splash-bar { margin: 40px auto 0; width: 160px; height: 3px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+    .splash-bar-fill { height: 100%; background: var(--red); border-radius: 4px; animation: load-bar 2.8s ease-in-out forwards; }
+    @keyframes load-bar { from{width:0;} to{width:100%;} }
+    .splash-btn { margin-top: 32px; background: var(--red); color: white; border: none; padding: 14px 32px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.2s; letter-spacing: 0.5px; }
+    .splash-btn:hover { background: #dc2626; transform: translateY(-1px); }
+
+    /* ─── SCREEN: HOME ─────────────────────────── */
+    .screen-body { padding: 24px; flex: 1; overflow-y: auto; }
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card-title { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+    .status-card {
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 16px;
+      border: 1.5px solid;
+    }
+    .status-card.safe { background: var(--green-bg); border-color: rgba(34,197,94,0.3); }
+    .status-card.medium { background: var(--orange-bg); border-color: rgba(245,158,11,0.3); }
+    .status-card.high { background: var(--red-glow); border-color: rgba(239,68,68,0.4); }
+    .status-card.critical { background: var(--red-glow); border-color: var(--red); animation: pulse-border 1s infinite; }
+    .status-icon-wrap {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; flex-shrink: 0;
+    }
+    .status-icon-wrap.safe { background: rgba(34,197,94,0.2); }
+    .status-icon-wrap.medium { background: rgba(245,158,11,0.2); }
+    .status-icon-wrap.high, .status-icon-wrap.critical { background: rgba(239,68,68,0.2); }
+    .status-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .status-value { font-size: 20px; font-weight: 800; }
+    .status-value.safe { color: var(--green); }
+    .status-value.medium { color: var(--orange); }
+    .status-value.high, .status-value.critical { color: var(--red); }
+    .status-desc { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .info-card {
+      background: var(--bg-secondary); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px;
+    }
+    .info-card .label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .info-card .value { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .info-card .value.mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-secondary); }
+
+    /* ─── SOS BUTTON ───────────────────────────── */
+    .sos-section { text-align: center; margin: 8px 0 24px; }
+    .sos-section .section-label { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 24px; }
+    .sos-ring-1 {
+      width: 200px; height: 200px;
+      background: rgba(239,68,68,0.06);
+      border: 2px solid rgba(239,68,68,0.12);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto;
+      animation: sos-pulse 2s ease-in-out infinite;
+    }
+    .sos-ring-2 {
+      width: 155px; height: 155px;
+      background: rgba(239,68,68,0.08);
+      border: 2px solid rgba(239,68,68,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sos-btn {
+      width: 118px; height: 118px;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 4px;
+      box-shadow: 0 0 40px rgba(239,68,68,0.4), 0 8px 24px rgba(0,0,0,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+      color: white; font-family: 'Inter', sans-serif;
+    }
+    .sos-btn:hover { transform: scale(1.04); box-shadow: 0 0 60px rgba(239,68,68,0.6), 0 12px 32px rgba(0,0,0,0.5); }
+    .sos-btn:active { transform: scale(0.97); }
+    .sos-btn .sos-emoji { font-size: 32px; }
+    .sos-btn .sos-label { font-size: 20px; font-weight: 900; letter-spacing: 2px; }
+    @keyframes sos-pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.03);} }
+    .sos-hint { font-size: 11px; color: var(--text-muted); margin-top: 16px; }
+    .map-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: transparent; border: 1.5px solid var(--border-light);
+      color: var(--text-primary); padding: 12px 24px;
+      border-radius: 10px; font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      width: 100%; margin-bottom: 12px; transition: 0.2s;
+    }
+    .map-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-bg); }
+
+    /* ─── MODAL ────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: var(--bg-secondary);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      max-width: 400px; width: 90%;
+      text-align: center;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+      animation: modal-in 0.25s ease;
+    }
+    @keyframes modal-in { from{transform:scale(0.92);opacity:0;} to{transform:scale(1);opacity:1;} }
+    .modal-icon { font-size: 52px; margin-bottom: 16px; }
+    .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .modal-body { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; }
+    .modal-actions { display: flex; gap: 12px; justify-content: center; }
+    .btn-cancel { background: var(--bg-tertiary); border: 1px solid var(--border-light); color: var(--text-primary); padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.2s; }
+    .btn-cancel:hover { background: var(--border); }
+    .btn-sos-confirm { background: var(--red); border: none; color: white; padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.2s; letter-spacing: 0.5px; }
+    .btn-sos-confirm:hover { background: #dc2626; }
+
+    /* ─── SCREEN: MAP ──────────────────────────── */
+    .map-container { position: relative; flex: 1; background: #0a1628; overflow: hidden; }
+    .map-svg { width: 100%; height: 100%; }
+    .map-legend {
+      position: absolute; bottom: 20px; left: 20px;
+      background: rgba(15,23,42,0.92);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      backdrop-filter: blur(8px);
+    }
+    .legend-title { font-size: 9px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; margin-bottom: 6px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .map-info {
+      position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+      background: rgba(15,23,42,0.92);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 8px 20px;
+      font-size: 13px; font-weight: 600;
+      backdrop-filter: blur(8px);
+      white-space: nowrap;
+    }
+
+    /* ─── SCREEN: INCIDENT ─────────────────────── */
+    .incident-header {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .incident-id-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .incident-id { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+    .status-badge {
+      padding: 6px 14px; border-radius: 20px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+    }
+    .status-badge.NEW { background: var(--red-glow); color: var(--red); border: 1px solid rgba(239,68,68,0.4); }
+    .status-badge.ASSIGNED { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(245,158,11,0.4); }
+    .status-badge.RESPONDING { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(59,130,246,0.4); }
+    .status-badge.RESOLVED { background: var(--green-bg); color: var(--green); border: 1px solid rgba(34,197,94,0.4); }
+    .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .detail-value { font-size: 13px; font-weight: 700; }
+    .hash-row {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hash-label { font-size: 10px; font-weight: 700; color: var(--blue); white-space: nowrap; }
+    .hash-value { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* Timeline */
+    .timeline { padding: 4px 0; }
+    .timeline-step { display: flex; gap: 14px; margin-bottom: 4px; }
+    .timeline-node { display: flex; flex-direction: column; align-items: center; }
+    .tnode { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
+    .tnode.done { background: var(--blue); border: 2px solid rgba(59,130,246,0.4); }
+    .tnode.current { background: var(--red); border: 2px solid rgba(239,68,68,0.4); box-shadow: 0 0 8px rgba(239,68,68,0.5); }
+    .tnode.pending { background: var(--bg-tertiary); border: 2px solid var(--border); }
+    .tline { width: 2px; flex: 1; background: var(--border); min-height: 28px; }
+    .tnode.done + .tline { background: var(--blue); }
+    .tstep-text { padding-bottom: 20px; }
+    .tstep-main { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .tstep-main.pending { color: var(--text-muted); font-weight: 500; }
+    .tstep-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+    /* ─── SCREEN: DASHBOARD ────────────────────── */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+    .kpi-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .kpi-label { font-size: 9px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .kpi-value { font-size: 32px; font-weight: 900; }
+    .kpi-icon { font-size: 22px; margin-bottom: 6px; }
+    .kpi-card.red .kpi-value { color: var(--red); }
+    .kpi-card.orange .kpi-value { color: var(--orange); }
+    .kpi-card.blue .kpi-value { color: var(--blue); }
+    .kpi-card.green .kpi-value { color: var(--green); }
+    .incident-table { width: 100%; }
+    .ithead th { text-align: left; font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.8px; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    .itr { cursor: pointer; border-radius: 8px; transition: 0.15s; }
+    .itr:hover td { background: var(--bg-tertiary); }
+    .itr.selected td { background: rgba(59,130,246,0.08); }
+    .itr td { padding: 12px; font-size: 13px; border-bottom: 1px solid rgba(51,65,85,0.5); }
+    .itr td:first-child { font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+    .sev-badge {
+      display: inline-block;
+      padding: 3px 8px; border-radius: 6px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    }
+    .sev-badge.HIGH { background: var(--red-glow); color: var(--red); }
+    .sev-badge.MEDIUM { background: var(--orange-bg); color: var(--orange); }
+    .detail-panel {
+      background: var(--bg-secondary);
+      border: 1.5px solid var(--blue);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-top: 20px;
+      animation: modal-in 0.2s ease;
+    }
+    .detail-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .detail-panel-title { font-size: 16px; font-weight: 800; }
+    .action-btns { display: flex; gap: 10px; margin-top: 20px; }
+    .action-btn {
+      flex: 1; padding: 11px; border-radius: 10px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      font-family: 'Inter', sans-serif; border: none;
+      transition: 0.2s; letter-spacing: 0.3px;
+    }
+    .action-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .action-btn.assign { background: var(--orange); color: #000; }
+    .action-btn.respond { background: var(--blue); color: white; }
+    .action-btn.resolve { background: var(--green); color: #000; }
+    .action-btn:not(:disabled):hover { filter: brightness(1.12); transform: translateY(-1px); }
+    .close-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; }
+    .close-btn:hover { color: var(--text-primary); }
+
+    /* ─── DEMO SIMULATOR ──────────────────────── */
+    .demo-fab {
+      position: fixed; bottom: 28px; right: 28px; z-index: 500;
+    }
+    .demo-fab-btn {
+      width: 52px; height: 52px;
+      background: var(--bg-secondary);
+      border: 1.5px solid var(--border-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      cursor: pointer; box-shadow: var(--shadow);
+      transition: 0.2s;
+    }
+    .demo-fab-btn:hover { border-color: var(--blue); background: var(--blue-bg); }
+    .demo-panel {
+      display: none;
+      position: absolute; bottom: 64px; right: 0;
+      width: 260px;
+      background: var(--bg-secondary);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .demo-panel.open { display: block; animation: modal-in 0.2s ease; }
+    .demo-panel-header {
+      background: var(--bg-tertiary);
+      padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .demo-panel-title { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .demo-panel-body { padding: 14px; }
+    .demo-hint { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; text-align: center; }
+    .demo-zone-btn {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; padding: 10px 12px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px; margin-bottom: 8px;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      color: var(--text-primary); transition: 0.15s;
+      text-align: left;
+    }
+    .demo-zone-btn:hover { background: var(--bg-tertiary); }
+    .demo-zone-btn.safe:hover { border-color: var(--green); color: var(--green); }
+    .demo-zone-btn.moderate:hover { border-color: var(--orange); color: var(--orange); }
+    .demo-zone-btn.danger:hover { border-color: var(--red); color: var(--red); }
+    .demo-divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+    .demo-sos-btn {
+      width: 100%; padding: 10px;
+      background: var(--red); border: none; color: white;
+      border-radius: 8px; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: 0.15s; letter-spacing: 0.3px;
+    }
+    .demo-sos-btn:hover { background: #dc2626; }
+
+    /* ─── ALERT TOAST ─────────────────────────── */
+    .geo-alert {
+      display: none;
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 800;
+      background: #7f1d1d;
+      border: 2px solid var(--red);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      max-width: 500px; width: 90%;
+      box-shadow: 0 8px 32px rgba(239,68,68,0.3);
+      animation: slide-down 0.3s ease;
+    }
+    .geo-alert.show { display: flex; gap: 14px; align-items: flex-start; }
+    @keyframes slide-down { from{transform:translateX(-50%) translateY(-20px);opacity:0;} to{transform:translateX(-50%) translateY(0);opacity:1;} }
+    .geo-alert-icon { font-size: 28px; flex-shrink: 0; }
+    .geo-alert-title { font-size: 15px; font-weight: 800; color: var(--red); margin-bottom: 4px; }
+    .geo-alert-body { font-size: 13px; color: #fca5a5; }
+    .geo-alert-close { margin-left: auto; background: none; border: none; color: #fca5a5; cursor: pointer; font-size: 18px; padding: 0; }
+
+    /* ─── SOS CONFIRM SCREEN ───────────────────── */
+    .sos-sent-card {
+      background: linear-gradient(135deg, #7f1d1d, #450a0a);
+      border: 2px solid var(--red);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+      animation: modal-in 0.3s ease;
+    }
+    .sos-sent-icon { font-size: 48px; margin-bottom: 12px; }
+    .sos-sent-title { font-size: 22px; font-weight: 900; color: var(--red); margin-bottom: 8px; }
+    .sos-sent-body { font-size: 13px; color: #fca5a5; line-height: 1.5; }
+    .sos-meta { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px; margin: 14px 0; text-align: left; }
+    .sos-meta-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
+    .sos-meta-row:last-child { margin-bottom: 0; }
+    .sos-meta-label { color: #fca5a5; }
+    .sos-meta-value { font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
+
+    @media (max-width: 900px) {
+      .sidebar { width: 64px; }
+      .sidebar-brand { padding: 16px 12px; }
+      .brand-name, .brand-sub, .did-badge, .nav-label, .nav-item span:not(.nav-icon), .tourist-card { display: none; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .no-incident {
+      text-align: center; padding: 60px 24px;
+      color: var(--text-muted);
+    }
+    .no-incident .ni-icon { font-size: 64px; margin-bottom: 16px; }
+    .no-incident .ni-title { font-size: 18px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; }
+    .no-incident .ni-body { font-size: 13px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  GEO-FENCE ALERT TOAST                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="geo-alert" id="geoAlert">
+  <div class="geo-alert-icon">⚠️</div>
+  <div>
+    <div class="geo-alert-title">⚠️ HIGH-RISK AREA DETECTED</div>
+    <div class="geo-alert-body" id="geoAlertBody">You have entered a high-risk zone. Please move toward a safer location immediately.</div>
+  </div>
+  <button class="geo-alert-close" onclick="dismissGeoAlert()">✕</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  SOS CONFIRMATION MODAL                     -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="modal-overlay" id="sosModal">
+  <div class="modal">
+    <div class="modal-icon">🚨</div>
+    <div class="modal-title">Emergency Assistance</div>
+    <div class="modal-body">
+      Are you sure you want to send an SOS?<br><br>
+      Your current location will be shared immediately with the <strong>monitoring authority</strong> and emergency responders.
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeSOSModal()">Cancel</button>
+      <button class="btn-sos-confirm" onclick="confirmSOS()">🚨 SEND SOS</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  DEMO FLOATING PANEL                        -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="demo-fab" id="demoFab">
+  <div class="demo-panel" id="demoPanel">
+    <div class="demo-panel-header">
+      <div class="demo-panel-title">🎮 Demo Simulator</div>
+      <button class="close-btn" onclick="toggleDemo()">✕</button>
+    </div>
+    <div class="demo-panel-body">
+      <div class="demo-hint">Simulate tourist location to trigger geo-fencing rules in real time:</div>
+      <button class="demo-zone-btn safe" onclick="simulateZone('safe')">
+        <span>🟢</span><span>Safe Area (Cubbon Park)</span>
+      </button>
+      <button class="demo-zone-btn moderate" onclick="simulateZone('moderate')">
+        <span>🟡</span><span>Moderate Risk (Vidhana Soudha)</span>
+      </button>
+      <button class="demo-zone-btn danger" onclick="simulateZone('high')">
+        <span>🔴</span><span>High Risk Area (Commercial St.)</span>
+      </button>
+      <hr class="demo-divider"/>
+      <button class="demo-sos-btn" onclick="openSOSModal()">🚨 Trigger SOS</button>
+    </div>
+  </div>
+  <div class="demo-fab-btn" onclick="toggleDemo()">🎮</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  MAIN APP SHELL                             -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="app-shell" id="appShell" style="display:none;">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <div class="shield-icon">🛡️</div>
+        <div>
+          <div class="brand-name">TouristSafe</div>
+        </div>
+      </div>
+      <div class="brand-sub">SMART SAFETY & INCIDENT RESPONSE</div>
+      <div class="did-badge">✅ Verified DID</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Tourist View</div>
+      <div class="nav-item active" id="nav-home" onclick="showScreen('home')">
+        <span class="nav-icon">🏠</span><span>Dashboard</span>
+      </div>
+      <div class="nav-item" id="nav-map" onclick="showScreen('map')">
+        <span class="nav-icon">🗺️</span><span>Safety Map</span>
+      </div>
+      <div class="nav-item" id="nav-incident" onclick="showScreen('incident')">
+        <span class="nav-icon">🚨</span><span>My Incident</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Authority View</div>
+      <div class="nav-item" id="nav-dashboard" onclick="showScreen('dashboard')">
+        <span class="nav-icon">📊</span><span>Control Dashboard</span>
+      </div>
+    </div>
+
+    <div class="nav-section-auth">
+      <div class="tourist-card">
+        <div class="tourist-name">Rohan Sharma</div>
+        <div class="tourist-id">ID: TR-8842</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main-area">
+
+    <!-- ── HOME SCREEN ────────────────────────── -->
+    <div class="screen active" id="screen-home">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">Tourist Safety Dashboard</div>
+          <div class="topbar-subtitle">Bengaluru Sector — Real-time Safety Monitor</div>
+        </div>
+        <div class="risk-pill low" id="topbar-risk-pill">
+          <span id="topbar-risk-dot">🟢</span>
+          <span id="topbar-risk-text">LOW RISK</span>
+        </div>
+      </div>
+      <div class="screen-body">
+        <!-- Status Card -->
+        <div class="status-card safe" id="home-status-card">
+          <div class="status-icon-wrap safe" id="home-status-icon-wrap">
+            <span id="home-status-icon">✅</span>
+          </div>
+          <div>
+            <div class="status-label">Safety Status</div>
+            <div class="status-value safe" id="home-status-value">SAFE AREA</div>
+            <div class="status-desc" id="home-status-desc">🟢 You are currently in a safe monitored zone</div>
+          </div>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="label">📍 Current Location</div>
+            <div class="value" id="home-location">Cubbon Park</div>
+            <div class="value mono" id="home-coords">12.97160, 77.59460</div>
+          </div>
+          <div class="info-card">
+            <div class="label">⚠️ Risk Level</div>
+            <div class="value" id="home-risk" style="color:var(--green)">LOW</div>
+          </div>
+          <div class="info-card">
+            <div class="label">🆔 Identity</div>
+            <div class="value" style="color:var(--blue);font-size:12px;">Aadhaar DID</div>
+          </div>
+          <div class="info-card">
+            <div class="label">🌐 Sector Status</div>
+            <div class="value" style="color:var(--green);font-size:12px;">OPERATIONAL</div>
+          </div>
+        </div>
+
+        <!-- Map Button -->
+        <button class="map-btn" onclick="showScreen('map')">
+          🗺️ Open Safety Map
+        </button>
+
+        <!-- SOS Button Section -->
+        <div class="sos-section">
+          <div class="section-label">Emergency Assistance</div>
+          <div class="sos-ring-1">
+            <div class="sos-ring-2">
+              <button class="sos-btn" onclick="openSOSModal()" id="sosBtnMain" title="Tap to send SOS">
+                <span class="sos-emoji">🚨</span>
+                <span class="sos-label">SOS</span>
+              </button>
+            </div>
+          </div>
+          <div class="sos-hint">Tap the SOS button to request Emergency Assistance<br>A confirmation step will be shown.</div>
+        </div>
+
+        <!-- Active incident alert (hidden by default) -->
+        <div id="home-active-incident" style="display:none;" class="card" style="border-color:var(--red);">
+          <div style="display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="showScreen('incident')">
+            <span style="font-size:24px;">🔴</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--red)">Active SOS Incident</div>
+              <div style="font-size:12px;color:var(--text-muted)" id="home-incident-id-label">INC-1024 • Status: NEW</div>
+            </div>
+            <span style="margin-left:auto;color:var(--text-muted);">›</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MAP SCREEN ─────────────────────────── -->
+    <div class="screen" id="screen-map">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">🗺️ Safety Map Hub</div>
+          <div class="topbar-subtitle">OpenStreetMap-powered Geo-fenced Zone Monitor</div>
+        </div>
+        <div class="risk-pill low" id="map-risk-pill">
+          <span id="map-risk-dot">🟢</span>
+          <span id="map-risk-text">LOW RISK</span>
+        </div>
+      </div>
+      <div class="map-container">
+        <div class="map-info" id="map-area-name">📍 Cubbon Park (Safe Zone)</div>
+        <svg class="map-svg" viewBox="0 0 800 540" xmlns="http://www.w3.org/2000/svg" id="mainMapSvg">
+          <!-- Map Background Tiles (stylized) -->
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a2744" stroke-width="0.5"/>
+            </pattern>
+            <radialGradient id="glowGreen" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#22c55e" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#22c55e" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glowOrange" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glowRed" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ef4444" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Background -->
+          <rect width="800" height="540" fill="#0a1628"/>
+          <rect width="800" height="540" fill="url(#grid)"/>
+
+          <!-- Road network (stylized Bengaluru lines) -->
+          <g stroke="#1e3a5f" stroke-width="8" fill="none" opacity="0.6">
+            <line x1="0" y1="270" x2="800" y2="270"/>
+            <line x1="400" y1="0" x2="400" y2="540"/>
+            <line x1="0" y1="180" x2="800" y2="180"/>
+            <line x1="0" y1="360" x2="800" y2="360"/>
+            <line x1="200" y1="0" x2="200" y2="540"/>
+            <line x1="600" y1="0" x2="600" y2="540"/>
+            <line x1="0" y1="90" x2="800" y2="90"/>
+            <line x1="0" y1="450" x2="800" y2="450"/>
+            <path d="M 100 540 Q 200 400 300 270 Q 400 140 500 0" stroke-width="6"/>
+            <path d="M 700 540 Q 600 400 500 270 Q 400 140 300 0" stroke-width="6"/>
+          </g>
+          <g stroke="#243b5e" stroke-width="3" fill="none" opacity="0.4">
+            <line x1="100" y1="0" x2="100" y2="540"/>
+            <line x1="300" y1="0" x2="300" y2="540"/>
+            <line x1="500" y1="0" x2="500" y2="540"/>
+            <line x1="700" y1="0" x2="700" y2="540"/>
+            <line x1="0" y1="135" x2="800" y2="135"/>
+            <line x1="0" y1="225" x2="800" y2="225"/>
+            <line x1="0" y1="315" x2="800" y2="315"/>
+            <line x1="0" y1="405" x2="800" y2="405"/>
+            <line x1="0" y1="495" x2="800" y2="495"/>
+          </g>
+
+          <!-- ZONE 1: Safe – Cubbon Park (center of map) -->
+          <circle cx="300" cy="270" r="90" fill="url(#glowGreen)" />
+          <circle cx="300" cy="270" r="90" fill="rgba(34,197,94,0.08)" stroke="#22c55e" stroke-width="2" stroke-dasharray="6,4"/>
+          <text x="300" y="248" text-anchor="middle" fill="#22c55e" font-size="10" font-family="Inter" font-weight="700">🟢 Cubbon Park</text>
+          <text x="300" y="261" text-anchor="middle" fill="#22c55e" font-size="9" font-family="Inter" opacity="0.7">SAFE ZONE • R=300m</text>
+
+          <!-- ZONE 2: Moderate – Vidhana Soudha -->
+          <circle cx="480" cy="200" r="70" fill="url(#glowOrange)" />
+          <circle cx="480" cy="200" r="70" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,4"/>
+          <text x="480" y="182" text-anchor="middle" fill="#f59e0b" font-size="10" font-family="Inter" font-weight="700">🟡 Vidhana Soudha</text>
+          <text x="480" y="195" text-anchor="middle" fill="#f59e0b" font-size="9" font-family="Inter" opacity="0.7">MODERATE • R=200m</text>
+
+          <!-- ZONE 3: High Risk – Commercial Street -->
+          <circle cx="570" cy="340" r="80" fill="url(#glowRed)" />
+          <circle cx="570" cy="340" r="80" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,4"/>
+          <text x="570" y="318" text-anchor="middle" fill="#ef4444" font-size="10" font-family="Inter" font-weight="700">🔴 Commercial Street</text>
+          <text x="570" y="331" text-anchor="middle" fill="#ef4444" font-size="9" font-family="Inter" opacity="0.7">HIGH RISK • R=250m</text>
+
+          <!-- Tourist Location Marker (animated) -->
+          <g id="touristMarker">
+            <circle cx="300" cy="270" r="24" fill="rgba(59,130,246,0.2)" class="pulse-anim"/>
+            <circle cx="300" cy="270" r="16" fill="rgba(59,130,246,0.3)"/>
+            <circle cx="300" cy="270" r="9" fill="#3b82f6" stroke="white" stroke-width="2.5"/>
+            <text x="300" y="254" text-anchor="middle" fill="#93c5fd" font-size="9" font-family="Inter" font-weight="700">🔵 Rohan</text>
+          </g>
+
+          <!-- Compass -->
+          <g transform="translate(748,28)">
+            <circle r="20" fill="rgba(15,23,42,0.8)" stroke="#334155" stroke-width="1"/>
+            <text text-anchor="middle" y="-8" fill="#94a3b8" font-size="8" font-family="Inter" font-weight="700">N</text>
+            <text text-anchor="middle" y="13" fill="#475569" font-size="6" font-family="Inter">S</text>
+            <line x1="0" y1="-14" x2="0" y2="14" stroke="#475569" stroke-width="1"/>
+            <line x1="-14" y1="0" x2="14" y2="0" stroke="#475569" stroke-width="1"/>
+          </g>
+
+          <!-- Scale bar -->
+          <g transform="translate(20,510)">
+            <line x1="0" y1="0" x2="80" y2="0" stroke="#475569" stroke-width="1.5"/>
+            <line x1="0" y1="-4" x2="0" y2="4" stroke="#475569" stroke-width="1.5"/>
+            <line x1="80" y1="-4" x2="80" y2="4" stroke="#475569" stroke-width="1.5"/>
+            <text x="40" y="-7" text-anchor="middle" fill="#64748b" font-size="8" font-family="Inter">500m</text>
+          </g>
+        </svg>
+
+        <div class="map-legend">
+          <div class="legend-title">Map Legend</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#22c55e;box-shadow:0 0 6px #22c55e;"></div>Safe Zone (LOW)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f59e0b;box-shadow:0 0 6px #f59e0b;"></div>Caution (MEDIUM)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#ef4444;box-shadow:0 0 6px #ef4444;"></div>High Risk (HIGH)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;box-shadow:0 0 6px #3b82f6;"></div>Your Location</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── INCIDENT SCREEN ────────────────────── -->
+    <div class="screen" id="screen-incident">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">🚨 Safety Incident Center</div>
+          <div class="topbar-subtitle">Your personal emergency response tracker</div>
+        </div>
+      </div>
+      <div class="screen-body" id="incident-body">
+        <!-- Filled dynamically -->
+        <div class="no-incident" id="noIncidentMsg">
+          <div class="ni-icon">✅</div>
+          <div class="ni-title">No Active Incidents</div>
+          <div class="ni-body">Your digital safety monitor is active and secure.<br>No SOS or emergency requests are currently open.<br><br>If you experience an emergency, tap the <strong>SOS button</strong> on the Home screen.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD SCREEN ───────────────────── -->
+    <div class="screen" id="screen-dashboard">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">📊 Authority Control Dashboard</div>
+          <div class="topbar-subtitle">Bengaluru Smart Tourist Safety Command Center</div>
+        </div>
+        <div style="font-size:11px;color:var(--green);display:flex;align-items:center;gap:6px;">
+          <span style="width:7px;height:7px;background:var(--green);border-radius:50%;display:inline-block;"></span>SYSTEM LIVE
+        </div>
+      </div>
+      <div class="screen-body">
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card red">
+            <div class="kpi-icon">🚨</div>
+            <div class="kpi-label">Active Incidents</div>
+            <div class="kpi-value" id="kpi-active">0</div>
+          </div>
+          <div class="kpi-card orange">
+            <div class="kpi-icon">⚠️</div>
+            <div class="kpi-label">High Risk Zones</div>
+            <div class="kpi-value">1</div>
+          </div>
+          <div class="kpi-card blue">
+            <div class="kpi-icon">👥</div>
+            <div class="kpi-label">Tourists Monitored</div>
+            <div class="kpi-value">24</div>
+          </div>
+          <div class="kpi-card red">
+            <div class="kpi-icon">📟</div>
+            <div class="kpi-label">SOS Today</div>
+            <div class="kpi-value" id="kpi-sos">1</div>
+          </div>
+        </div>
+
+        <!-- Incident Queue -->
+        <div class="card" style="padding:0;overflow:hidden;">
+          <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
+            <div style="font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;">Real-Time Incident Queue</div>
+          </div>
+          <table class="incident-table" id="incidentTable">
+            <thead class="ithead">
+              <tr>
+                <th>Incident ID</th>
+                <th>Type</th>
+                <th>Tourist</th>
+                <th>Severity</th>
+                <th>Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="incidentTableBody">
+              <!-- Pre-seeded mock incident -->
+              <tr class="itr" onclick="selectIncident('INC-1022')" id="row-INC-1022">
+                <td>INC-1022</td>
+                <td>Medical Alert</td>
+                <td>Emily Watson</td>
+                <td><span class="sev-badge MEDIUM">MEDIUM</span></td>
+                <td>11:15 AM</td>
+                <td><span class="status-badge RESOLVED">RESOLVED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Detail Panel (hidden by default) -->
+        <div class="detail-panel" id="detailPanel" style="display:none;">
+          <div class="detail-panel-header">
+            <div class="detail-panel-title" id="dp-title">Incident Details</div>
+            <button class="close-btn" onclick="closeDetailPanel()">✕</button>
+          </div>
+          <div id="dp-content"></div>
+          <div class="action-btns" id="dp-actions"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  SPLASH SCREEN                              -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="splashScreen" style="display:flex;height:100vh;background:linear-gradient(135deg,#0f172a 0%,#1a0a2e 50%,#0f172a 100%);align-items:center;justify-content:center;flex-direction:column;">
+  <div class="splash-content">
+    <div class="splash-ring-outer">
+      <div class="splash-ring-inner">🛡️</div>
+    </div>
+    <div class="splash-title">TouristSafe</div>
+    <div class="splash-subtitle">Smart Tourist Safety & Incident Response</div>
+    <div class="splash-sih">SIH260483 — Internal Prototype v1.0</div>
+    <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+    <br>
+    <button class="splash-btn" onclick="enterApp()">🚀 Launch Application</button>
+  </div>
+</div>
+
+<style>
+@keyframes marker-anim { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.7;transform:scale(1.15);} }
+.pulse-anim { animation: marker-anim 1.8s ease-in-out infinite; }
+</style>
+
+<script>
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+const state = {
+  currentRisk: 'LOW',
+  currentArea: 'Cubbon Park (Safe Zone)',
+  currentLat: 12.9716,
+  currentLng: 77.5946,
+  geoAlertDismissed: false,
+  activeIncident: null,
+  incidents: [
+    {
+      id: 'INC-1022',
+      touristId: 'TR-5412',
+      touristName: 'Emily Watson',
+      type: 'Medical Alert',
+      severity: 'MEDIUM',
+      status: 'RESOLVED',
+      lat: 12.9750,
+      lng: 77.5980,
+      time: '11:15 AM',
+      timeline: [
+        { text: 'Alert Triggered', sub: '11:15 AM', done: true },
+        { text: 'Responder Assigned', sub: '11:22 AM', done: true },
+        { text: 'Assistance Provided', sub: '11:40 AM', done: true },
+        { text: 'Incident Resolved', sub: '12:05 PM', done: true },
+      ],
+      hash: '0x8fa1cd349fe88b201a09887712bd'
+    }
+  ],
+  selectedIncident: null
+};
+
+const zones = {
+  safe: { name: 'Cubbon Park (Safe Zone)', lat: 12.9716, lng: 77.5946, risk: 'LOW', cx: 300, cy: 270 },
+  moderate: { name: 'Vidhana Soudha (Moderate Risk)', lat: 12.9750, lng: 77.5980, risk: 'MEDIUM', cx: 480, cy: 200 },
+  high: { name: 'Commercial Street (High Risk)', lat: 12.9800, lng: 77.6050, risk: 'HIGH', cx: 570, cy: 340 }
+};
+
+// ═══════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════
+function enterApp() {
+  document.getElementById('splashScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = 'flex';
+  showScreen('home');
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+  if (name === 'incident') renderIncidentScreen();
+  if (name === 'dashboard') renderDashboard();
+}
+
+// ═══════════════════════════════════════════════
+//  GEO-FENCE & RISK ENGINE
+// ═══════════════════════════════════════════════
+function simulateZone(type) {
+  const zone = zones[type];
+  state.currentArea = zone.name;
+  state.currentLat = zone.lat;
+  state.currentLng = zone.lng;
+  state.currentRisk = state.activeIncident ? 'CRITICAL' : zone.risk;
+  state.geoAlertDismissed = false;
+
+  updateMapMarker(zone.cx, zone.cy);
+  updateRiskUI();
+
+  if (type === 'high' && !state.activeIncident) {
+    showGeoAlert(zone.name);
+  } else {
+    dismissGeoAlert();
+  }
+  toggleDemo();
+}
+
+function updateMapMarker(cx, cy) {
+  const marker = document.getElementById('touristMarker');
+  if (!marker) return;
+  marker.querySelectorAll('circle, text').forEach(el => {
+    const isCx = el.hasAttribute('cx');
+    if (isCx) { el.setAttribute('cx', cx); el.setAttribute('cy', cy); }
+    else if (el.tagName === 'text') { el.setAttribute('x', cx); el.setAttribute('y', cy - 16); }
+  });
+}
+
+function updateRiskUI() {
+  const risk = state.currentRisk;
+  const area = state.currentArea;
+  const lat = state.currentLat.toFixed(5);
+  const lng = state.currentLng.toFixed(5);
+
+  // Topbar pills
+  const pillColor = { LOW:'low', MEDIUM:'medium', HIGH:'high', CRITICAL:'critical' }[risk] || 'low';
+  const pillDot = { LOW:'🟢', MEDIUM:'🟡', HIGH:'🔴', CRITICAL:'🔴' }[risk] || '🟢';
+  const pillText = { LOW:'LOW RISK', MEDIUM:'MODERATE RISK', HIGH:'HIGH RISK', CRITICAL:'🚨 CRITICAL' }[risk] || 'LOW RISK';
+
+  ['topbar-risk-pill','map-risk-pill'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.className = 'risk-pill ' + pillColor;
+  });
+  ['topbar-risk-dot','map-risk-dot'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = pillDot; });
+  ['topbar-risk-text','map-risk-text'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = pillText; });
+
+  // Home screen
+  const cardClsMap = { LOW:'safe', MEDIUM:'medium', HIGH:'high', CRITICAL:'critical' };
+  const cardCls = cardClsMap[risk] || 'safe';
+  const homeCard = document.getElementById('home-status-card');
+  if (homeCard) homeCard.className = 'status-card ' + cardCls;
+  const homeIconWrap = document.getElementById('home-status-icon-wrap');
+  if (homeIconWrap) homeIconWrap.className = 'status-icon-wrap ' + cardCls;
+  const homeStatusIcon = document.getElementById('home-status-icon');
+  const statusIconMap = { LOW:'✅', MEDIUM:'⚠️', HIGH:'🚫', CRITICAL:'🚨' };
+  if (homeStatusIcon) homeStatusIcon.textContent = statusIconMap[risk] || '✅';
+  const homeStatusValue = document.getElementById('home-status-value');
+  const statusTextMap = { LOW:'SAFE AREA', MEDIUM:'MODERATE RISK', HIGH:'HIGH RISK', CRITICAL:'CRITICAL EMERGENCY' };
+  if (homeStatusValue) { homeStatusValue.textContent = statusTextMap[risk]; homeStatusValue.className = 'status-value ' + cardCls; }
+  const homeStatusDesc = document.getElementById('home-status-desc');
+  const statusDescMap = {
+    LOW: '🟢 You are currently in a safe monitored zone',
+    MEDIUM: '🟡 Caution: Elevated risk factors detected ahead',
+    HIGH: '🔴 Warning: You have entered a high-risk zone',
+    CRITICAL: '🚨 Emergency SOS active — Responders have been alerted'
+  };
+  if (homeStatusDesc) homeStatusDesc.textContent = statusDescMap[risk] || '';
+
+  // Location info
+  const homeLocation = document.getElementById('home-location');
+  if (homeLocation) homeLocation.textContent = area;
+  const homeCoords = document.getElementById('home-coords');
+  if (homeCoords) homeCoords.textContent = lat + ', ' + lng;
+  const homeRisk = document.getElementById('home-risk');
+  if (homeRisk) {
+    homeRisk.textContent = risk;
+    homeRisk.style.color = { LOW:'var(--green)', MEDIUM:'var(--orange)', HIGH:'var(--red)', CRITICAL:'var(--red)' }[risk] || 'var(--green)';
+  }
+
+  // Map area name
+  const mapAreaName = document.getElementById('map-area-name');
+  if (mapAreaName) mapAreaName.textContent = '📍 ' + area;
+
+  // KPI update
+  updateKPIs();
+}
+
+// ═══════════════════════════════════════════════
+//  GEO-ALERT
+// ═══════════════════════════════════════════════
+function showGeoAlert(areaName) {
+  const alertEl = document.getElementById('geoAlert');
+  const bodyEl = document.getElementById('geoAlertBody');
+  if (bodyEl) bodyEl.textContent = 'You have entered: ' + areaName + '. Please consider moving toward a safer location.';
+  if (alertEl) alertEl.classList.add('show');
+  setTimeout(dismissGeoAlert, 8000);
+}
+
+function dismissGeoAlert() {
+  const alertEl = document.getElementById('geoAlert');
+  if (alertEl) alertEl.classList.remove('show');
+}
+
+// ═══════════════════════════════════════════════
+//  SOS MODAL
+// ═══════════════════════════════════════════════
+function openSOSModal() {
+  document.getElementById('sosModal').classList.add('show');
+}
+
+function closeSOSModal() {
+  document.getElementById('sosModal').classList.remove('show');
+}
+
+function confirmSOS() {
+  closeSOSModal();
+  const incId = 'INC-' + (1024 + state.incidents.filter(i => i.type === 'SOS').length);
+  const hash = '0x' + Math.abs(incId.split('').reduce((a,b)=>a*31+b.charCodeAt(0),0)).toString(16) + Date.now().toString(16);
+  const now = new Date();
+  const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+
+  const newInc = {
+    id: incId,
+    touristId: 'TR-8842',
+    touristName: 'Rohan Sharma',
+    type: 'SOS',
+    severity: 'HIGH',
+    status: 'NEW',
+    lat: state.currentLat,
+    lng: state.currentLng,
+    time: timeStr,
+    area: state.currentArea,
+    timeline: [
+      { text: 'SOS Triggered', sub: timeStr, done: true },
+      { text: 'Incident Recorded in Secure Ledger', sub: 'Blockchain hash generated', done: true },
+      { text: 'Emergency Authority Notified', sub: 'Dashboard alert sent', done: true },
+      { text: 'Responder Assigned', sub: 'Awaiting dispatch...', done: false },
+      { text: 'Responder En Route', sub: 'Pending...', done: false },
+      { text: 'Incident Resolved', sub: 'Pending...', done: false },
+    ],
+    hash: hash
+  };
+
+  state.incidents.unshift(newInc);
+  state.activeIncident = newInc;
+  state.currentRisk = 'CRITICAL';
+
+  // Update home screen active incident notice
+  const homeActiveInc = document.getElementById('home-active-incident');
+  if (homeActiveInc) homeActiveInc.style.display = 'block';
+  const homeIncLabel = document.getElementById('home-incident-id-label');
+  if (homeIncLabel) homeIncLabel.textContent = incId + ' • Status: NEW';
+
+  updateRiskUI();
+  showScreen('incident');
+}
+
+// ═══════════════════════════════════════════════
+//  INCIDENT SCREEN
+// ═══════════════════════════════════════════════
+function renderIncidentScreen() {
+  const body = document.getElementById('incident-body');
+  const noMsg = document.getElementById('noIncidentMsg');
+  const inc = state.activeIncident;
+
+  if (!inc) {
+    if (noMsg) noMsg.style.display = 'block';
+    return;
+  }
+  if (noMsg) noMsg.style.display = 'none';
+
+  const statusColors = { NEW:'var(--red)', ASSIGNED:'var(--orange)', RESPONDING:'var(--blue)', RESOLVED:'var(--green)' };
+  const statusColor = statusColors[inc.status] || 'var(--red)';
+
+  // Build timeline HTML
+  const timelineSteps = inc.timeline.map((step, i) => {
+    const isLast = i === inc.timeline.length - 1;
+    let nodeClass = step.done ? 'done' : (i === inc.timeline.findIndex(s => !s.done) ? 'current' : 'pending');
+    return `
+      <div class="timeline-step">
+        <div class="timeline-node">
+          <div class="tnode ${nodeClass}"></div>
+          ${!isLast ? '<div class="tline"></div>' : ''}
+        </div>
+        <div class="tstep-text">
+          <div class="tstep-main ${!step.done && nodeClass !== 'current' ? 'pending' : ''}">${step.text}</div>
+          <div class="tstep-sub">${step.sub}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  body.innerHTML = `
+    <div class="incident-header">
+      <div class="incident-id-row">
+        <div class="incident-id">INCIDENT ${inc.id}</div>
+        <div class="status-badge ${inc.status}">${inc.status}</div>
+      </div>
+      <div class="detail-row"><div class="detail-label">Incident Type</div><div class="detail-value">${inc.type}</div></div>
+      <div class="detail-row"><div class="detail-label">Severity</div><div class="detail-value" style="color:var(--red)">${inc.severity}</div></div>
+      <div class="detail-row"><div class="detail-label">Location</div><div class="detail-value" style="font-size:12px;">${inc.area || state.currentArea}</div></div>
+      <div class="detail-row"><div class="detail-label">Triggered At</div><div class="detail-value">${inc.time}</div></div>
+      <div class="detail-row"><div class="detail-label">Tourist ID</div><div class="detail-value" style="font-family:'JetBrains Mono',monospace;font-size:12px;">${inc.touristId}</div></div>
+      <div class="hash-row">
+        <span style="font-size:14px;">🔗</span>
+        <div class="hash-label">Ledger Hash:</div>
+        <div class="hash-value">${inc.hash}</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Response Timeline</div>
+      <div class="timeline">${timelineSteps}</div>
+    </div>
+    <div style="height:80px;"></div>
+  `;
+}
+
+// ═══════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════
+function renderDashboard() {
+  updateKPIs();
+  const tbody = document.getElementById('incidentTableBody');
+  tbody.innerHTML = '';
+  state.incidents.forEach(inc => {
+    const tr = document.createElement('tr');
+    tr.className = 'itr' + (state.selectedIncident?.id === inc.id ? ' selected' : '');
+    tr.id = 'row-' + inc.id;
+    tr.onclick = () => selectIncident(inc.id);
+    tr.innerHTML = `
+      <td>${inc.id}</td>
+      <td>${inc.type}</td>
+      <td>${inc.touristName}</td>
+      <td><span class="sev-badge ${inc.severity}">${inc.severity}</span></td>
+      <td>${inc.time}</td>
+      <td><span class="status-badge ${inc.status}">${inc.status}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  if (state.selectedIncident) {
+    showDetailPanel(state.selectedIncident.id);
+  }
+}
+
+function updateKPIs() {
+  const active = state.incidents.filter(i => i.status !== 'RESOLVED').length;
+  const sos = state.incidents.filter(i => i.type === 'SOS').length;
+  const kpiActive = document.getElementById('kpi-active');
+  const kpiSos = document.getElementById('kpi-sos');
+  if (kpiActive) kpiActive.textContent = active;
+  if (kpiSos) kpiSos.textContent = sos;
+}
+
+function selectIncident(id) {
+  state.selectedIncident = state.incidents.find(i => i.id === id);
+  renderDashboard();
+}
+
+function showDetailPanel(id) {
+  const inc = state.incidents.find(i => i.id === id);
+  if (!inc) return;
+  const panel = document.getElementById('detailPanel');
+  const dpTitle = document.getElementById('dp-title');
+  const dpContent = document.getElementById('dp-content');
+  const dpActions = document.getElementById('dp-actions');
+  panel.style.display = 'block';
+  dpTitle.textContent = 'Control Operations — ' + inc.id;
+
+  const canAssign = inc.status === 'NEW';
+  const canRespond = inc.status === 'ASSIGNED';
+  const canResolve = inc.status === 'RESPONDING';
+
+  dpContent.innerHTML = `
+    <div class="detail-row"><div class="detail-label">Tourist ID</div><div class="detail-value" style="font-family:'JetBrains Mono',monospace;font-size:12px;">${inc.touristId}</div></div>
+    <div class="detail-row"><div class="detail-label">Tourist Name</div><div class="detail-value">${inc.touristName}</div></div>
+    <div class="detail-row"><div class="detail-label">Type</div><div class="detail-value">${inc.type}</div></div>
+    <div class="detail-row"><div class="detail-label">Severity</div><div class="detail-value" style="color:${inc.severity==='HIGH'?'var(--red)':'var(--orange)'}">${inc.severity}</div></div>
+    <div class="detail-row"><div class="detail-label">Status</div><div class="status-badge ${inc.status}" style="display:inline-block;">${inc.status}</div></div>
+    <div class="detail-row"><div class="detail-label">Triggered</div><div class="detail-value">${inc.time}</div></div>
+    <div class="detail-row"><div class="detail-label">Coordinates</div><div class="detail-value" style="font-family:'JetBrains Mono',monospace;font-size:11px;">Lat ${inc.lat.toFixed(4)}, Lng ${inc.lng.toFixed(4)}</div></div>
+    ${inc.hash ? `<div class="hash-row" style="margin-top:10px;"><span style="font-size:14px;">🔒</span><div class="hash-label">Audit Proof:</div><div class="hash-value">${inc.hash}</div></div>` : ''}
+    <div style="margin-top:14px;font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:0.5px;text-transform:uppercase;">Workflow Actions</div>
+  `;
+
+  dpActions.innerHTML = `
+    <button class="action-btn assign" ${!canAssign?'disabled':''} onclick="updateStatus('${inc.id}','ASSIGNED')">Assign</button>
+    <button class="action-btn respond" ${!canRespond?'disabled':''} onclick="updateStatus('${inc.id}','RESPONDING')">Mark Responding</button>
+    <button class="action-btn resolve" ${!canResolve?'disabled':''} onclick="updateStatus('${inc.id}','RESOLVED')">Resolve</button>
+  `;
+}
+
+function closeDetailPanel() {
+  document.getElementById('detailPanel').style.display = 'none';
+  state.selectedIncident = null;
+  renderDashboard();
+}
+
+function updateStatus(id, newStatus) {
+  const inc = state.incidents.find(i => i.id === id);
+  if (!inc) return;
+  inc.status = newStatus;
+  const now = new Date();
+  const t = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+
+  const statusMsgs = {
+    ASSIGNED: 'Assigned to Dispatch Unit',
+    RESPONDING: 'Responder Dispatched & En Route',
+    RESOLVED: 'Incident Resolved & Safe Code Verified'
+  };
+
+  if (inc.timeline) {
+    const stepMap = { ASSIGNED: 3, RESPONDING: 4, RESOLVED: 5 };
+    const idx = stepMap[newStatus];
+    if (idx !== undefined && inc.timeline[idx]) {
+      inc.timeline[idx].done = true;
+      inc.timeline[idx].sub = t;
+    }
+  }
+
+  // If this is the active tourist incident, sync state
+  if (state.activeIncident && state.activeIncident.id === id) {
+    state.activeIncident = inc;
+    if (newStatus === 'RESOLVED') {
+      state.activeIncident = null;
+      state.currentRisk = zones.safe.risk;
+      document.getElementById('home-active-incident').style.display = 'none';
+      updateRiskUI();
+    }
+  }
+
+  renderDashboard();
+  showDetailPanel(id);
+  showToast('✅ Incident ' + id + ' updated to ' + newStatus);
+}
+
+// ═══════════════════════════════════════════════
+//  DEMO PANEL
+// ═══════════════════════════════════════════════
+function toggleDemo() {
+  const panel = document.getElementById('demoPanel');
+  panel.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════
+//  TOAST NOTIFICATION
+// ═══════════════════════════════════════════════
+let toastTimeout;
+function showToast(msg) {
+  let toast = document.getElementById('appToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'appToast';
+    toast.style.cssText = `position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1e293b;border:1px solid #334155;border-radius:10px;padding:12px 20px;font-size:13px;font-weight:600;color:#f1f5f9;z-index:900;box-shadow:0 8px 24px rgba(0,0,0,0.4);transition:opacity 0.3s;white-space:nowrap;`;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+}
+</script>
+</body>
+</html>

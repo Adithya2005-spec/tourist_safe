@@ -1,0 +1,118 @@
+{
+  "app": {
+    "name": "TouristSafe",
+    "tagline": "Smart Tourist Safety & Incident Response",
+    "sihCode": "SIH260483"
+  },
+  "nav": {
+    "home": "Home",
+    "map": "Safety Map",
+    "incidents": "Incidents",
+    "notifications": "Alerts",
+    "profile": "Profile",
+    "settings": "Settings",
+    "emergencyContacts": "Emergency Contacts",
+    "liveLocation": "Live Location",
+    "digitalIdentity": "Digital Identity",
+    "offlineSync": "Offline Queue"
+  },
+  "risk": {
+    "highRiskArea": "High Risk Area",
+    "safeArea": "Safe Zone",
+    "moderateRiskArea": "Moderate Risk Zone",
+    "criticalRiskArea": "Critical Danger Zone",
+    "riskScore": "AI Risk Score",
+    "low": "LOW RISK",
+    "moderate": "MODERATE RISK",
+    "high": "HIGH RISK",
+    "critical": "CRITICAL RISK",
+    "geofenceAlert": "Geo-Fence Proximity Warning",
+    "approachingRisk": "You are approaching a flagged hazard zone",
+    "saferRouteFound": "Safer Alternate Route Available",
+    "selectSaferRoute": "Switch to Safer Route"
+  },
+  "sos": {
+    "button": "SOS",
+    "emergencyDistress": "EMERGENCY DISTRESS",
+    "tapToTrigger": "Press and hold for 3 seconds to alert Police HQ",
+    "activated": "SOS ACTIVATED",
+    "servicesNotified": "Emergency services have been notified.",
+    "primaryContact": "Your primary emergency contact",
+    "locationShared": "Shared with Emergency Responders",
+    "incidentId": "Incident ID",
+    "cancelSos": "Cancel Distress Signal",
+    "noContactConfigured": "No emergency contact configured.",
+    "addContact": "Add Emergency Contact"
+  },
+  "locationSharing": {
+    "title": "Live Location Sharing",
+    "notSharing": "NOT SHARING",
+    "active": "LIVE LOCATION SHARING ACTIVE",
+    "shareLiveLocation": "SHARE MY LIVE LOCATION",
+    "selectContact": "Select Emergency Contact",
+    "selectDuration": "Select Sharing Duration",
+    "duration15": "15 Minutes",
+    "duration30": "30 Minutes",
+    "duration60": "1 Hour",
+    "sharedWith": "Shared with",
+    "remaining": "Remaining",
+    "minutes": "minutes",
+    "stopSharing": "STOP SHARING",
+    "networkInterrupted": "NETWORK INTERRUPTED",
+    "sessionEnded": "LOCATION SHARING ENDED",
+    "privacyNotice": "Your location is encrypted and only accessible by your selected emergency contact for safety monitoring."
+  },
+  "emergencyContacts": {
+    "title": "Emergency Contacts",
+    "addContact": "ADD CONTACT",
+    "editContact": "EDIT",
+    "deleteContact": "DELETE",
+    "primary": "PRIMARY EMERGENCY CONTACT",
+    "setPrimary": "Set as Primary",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "relationship": "Relationship",
+    "parent": "Parent",
+    "spouse": "Spouse",
+    "friend": "Friend",
+    "sibling": "Sibling",
+    "other": "Other",
+    "save": "Save Contact",
+    "cancel": "Cancel",
+    "confirmDelete": "Are you sure you want to delete this contact?"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "emergencyContacts": "Emergency Contacts",
+    "liveLocationSharing": "Live Location Sharing",
+    "notifications": "Notifications & Alerts",
+    "privacy": "Privacy & Data Protection",
+    "demoMode": "SIH Jury Demo Mode",
+    "logout": "Logout",
+    "selectLanguage": "Select Language"
+  },
+  "demo": {
+    "title": "SIH Demonstration Mode",
+    "startLiveSharing": "START LIVE SHARING",
+    "simulateMovement": "SIMULATE LOCATION UPDATE",
+    "simulateNetworkOff": "SIMULATE NETWORK OFF",
+    "simulateNetworkOn": "SIMULATE NETWORK ON",
+    "stopSharing": "STOP SHARING"
+  },
+  "offline": {
+    "offlineMode": "Offline Mode Active",
+    "savedLocally": "Incident queued locally on device",
+    "synced": "Synchronized with Central HQ",
+    "syncing": "Syncing pending telemetry..."
+  },
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "status": "Status",
+    "battery": "Battery",
+    "gps": "GPS Signal",
+    "verified": "Verified",
+    "back": "Back"
+  }
+}

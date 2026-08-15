@@ -1,0 +1,27 @@
+name: tourist_safe
+description: "Smart Tourist Safety & Incident Response System using AI, Geo-Fencing, and Blockchain-based Digital Identity (SIH260483 Prototype)"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  provider: ^6.1.2
+
+  # Maps and Geo-coordinates (No API key required)
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true

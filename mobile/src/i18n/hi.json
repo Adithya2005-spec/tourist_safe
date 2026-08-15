@@ -1,0 +1,118 @@
+{
+  "app": {
+    "name": "टूरिस्टसेफ",
+    "tagline": "स्मार्ट पर्यटक सुरक्षा और आपातकालीन प्रतिक्रिया प्रणाली",
+    "sihCode": "SIH260483"
+  },
+  "nav": {
+    "home": "मुख्य पृष्ठ",
+    "map": "सुरक्षा मानचित्र",
+    "incidents": "घटनाएं",
+    "notifications": "सूचनाएं",
+    "profile": "प्रोफ़ाइल",
+    "settings": "सेटिंग्स",
+    "emergencyContacts": "आपातकालीन संपर्क",
+    "liveLocation": "लाइव स्थान",
+    "digitalIdentity": "डिजिटल पहचान",
+    "offlineSync": "ऑफ़लाइन कतार"
+  },
+  "risk": {
+    "highRiskArea": "उच्च जोखिम क्षेत्र",
+    "safeArea": "सुरक्षित क्षेत्र",
+    "moderateRiskArea": "मध्यम जोखिम क्षेत्र",
+    "criticalRiskArea": "गंभीर खतरा क्षेत्र",
+    "riskScore": "एआई जोखिम स्कोर",
+    "low": "कम जोखिम",
+    "moderate": "मध्यम जोखिम",
+    "high": "उच्च जोखिम",
+    "critical": "गंभीर जोखिम",
+    "geofenceAlert": "जियो-फेंस निकटता चेतावनी",
+    "approachingRisk": "आप एक चिन्हित जोखिम क्षेत्र के पास पहुंच रहे हैं",
+    "saferRouteFound": "सुरक्षित वैकल्पिक मार्ग उपलब्ध",
+    "selectSaferRoute": "सुरक्षित मार्ग चुनें"
+  },
+  "sos": {
+    "button": "एसओएस (SOS)",
+    "emergencyDistress": "आपातकालीन संकट अलार्म",
+    "tapToTrigger": "पुलिस मुख्यालय को सूचित करने के लिए 3 सेकंड दबाएं",
+    "activated": "एसओएस सक्रिय किया गया (SOS ACTIVATED)",
+    "servicesNotified": "आपातकालीन सेवाओं को सूचित कर दिया गया है।",
+    "primaryContact": "आपका प्राथमिक आपातकालीन संपर्क",
+    "locationShared": "आपातकालीन दल के साथ साझा किया गया",
+    "incidentId": "घटना कोड",
+    "cancelSos": "संकट संकेत रद्द करें",
+    "noContactConfigured": "कोई आपातकालीन संपर्क कॉन्फ़िगर नहीं है।",
+    "addContact": "आपातकालीन संपर्क जोड़ें"
+  },
+  "locationSharing": {
+    "title": "लाइव स्थान साझाकरण",
+    "notSharing": "साझा नहीं किया जा रहा",
+    "active": "लाइव स्थान साझाकरण सक्रिय है",
+    "shareLiveLocation": "मेरा लाइव स्थान साझा करें",
+    "selectContact": "आपातकालीन संपर्क चुनें",
+    "selectDuration": "साझाकरण अवधि चुनें",
+    "duration15": "15 मिनट",
+    "duration30": "30 मिनट",
+    "duration60": "1 घंटा",
+    "sharedWith": "साझा किया गया",
+    "remaining": "शेष समय",
+    "minutes": "मिनट",
+    "stopSharing": "साझाकरण बंद करें",
+    "networkInterrupted": "नेटवर्क बाधित हुआ",
+    "sessionEnded": "स्थान साझाकरण समाप्त हुआ",
+    "privacyNotice": "आपका स्थान एन्क्रिप्टेड है और सुरक्षा निगरानी के लिए केवल आपके चुने हुए आपातकालीन संपर्क द्वारा ही देखा जा सकता है।"
+  },
+  "emergencyContacts": {
+    "title": "आपातकालीन संपर्क",
+    "addContact": "संपर्क जोड़ें",
+    "editContact": "संपादित करें",
+    "deleteContact": "हटाएं",
+    "primary": "प्राथमिक आपातकालीन संपर्क",
+    "setPrimary": "प्राथमिक के रूप में सेट करें",
+    "name": "पूरा नाम",
+    "phone": "फ़ोन नंबर",
+    "relationship": "संबंध",
+    "parent": "माता-पिता",
+    "spouse": "पति/पत्नी",
+    "friend": "मित्र",
+    "sibling": "भाई/बहन",
+    "other": "अन्य",
+    "save": "संपर्क सहेजें",
+    "cancel": "रद्द करें",
+    "confirmDelete": "क्या आप वाकई इस संपर्क को हटाना चाहते हैं?"
+  },
+  "settings": {
+    "title": "सेटिंग्स",
+    "language": "भाषा (Language)",
+    "emergencyContacts": "आपातकालीन संपर्क",
+    "liveLocationSharing": "लाइव स्थान साझाकरण",
+    "notifications": "सूचनाएं और अलर्ट",
+    "privacy": "गोपनीयता और डेटा सुरक्षा",
+    "demoMode": "एसआईएच जूरी डेमो मोड",
+    "logout": "लॉग आउट",
+    "selectLanguage": "भाषा चुनें"
+  },
+  "demo": {
+    "title": "एसआईएच प्रदर्शन मोड",
+    "startLiveSharing": "लाइव साझाकरण प्रारंभ करें",
+    "simulateMovement": "स्थान अद्यतन सिमुलेशन",
+    "simulateNetworkOff": "नेटवर्क बंद सिमुलेशन",
+    "simulateNetworkOn": "नेटवर्क चालू सिमुलेशन",
+    "stopSharing": "साझाकरण बंद करें"
+  },
+  "offline": {
+    "offlineMode": "ऑफ़लाइन मोड सक्रिय",
+    "savedLocally": "घटना डिवाइस पर स्थानीय रूप से कतारबद्ध",
+    "synced": "केंद्रीय मुख्यालय के साथ समन्वयित",
+    "syncing": "लंबित डेटा समन्वयित किया जा रहा है..."
+  },
+  "common": {
+    "confirm": "पुष्टि करें",
+    "cancel": "रद्द करें",
+    "status": "स्थिति",
+    "battery": "बैटरी",
+    "gps": "जीपीएस सिग्नल",
+    "verified": "सत्यापित",
+    "back": "वापस"
+  }
+}
