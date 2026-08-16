@@ -1,7 +1,6 @@
 <div align="center">
 
 # 🛡️ RakshaSetu
-
 ### *Smart Tourist Safety & Incident Response Platform*
 
 [![SIH 2026](https://img.shields.io/badge/SIH-2026-blue?style=for-the-badge&logo=india)](https://www.sih.gov.in)
